@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import moment from "moment-timezone";
 import Clock from "./components/Clock/page";
-import ClockSm from "./components/Clock-sm/page";
-import Clockmd from "./components/Clock-md/page";
-import AnalogeClock from "./components/ClockAnalogue/page";
 
 let theme = {
   key: "light",
