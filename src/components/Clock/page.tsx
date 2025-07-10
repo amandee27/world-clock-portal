@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 function Clock({ isChecked }: any) {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [showNumbers, setShowNumbers] = useState(isChecked);
+  const [showNumbers, setShowNumbers] = useState(false);
   const [timing, setTiming] = useState({
     updateSeconds: {},
     updateMinutes: {},
@@ -34,6 +34,7 @@ function Clock({ isChecked }: any) {
   }, [currentTime]);
   useEffect(() => {
     setShowNumbers(isChecked);
+    console.log(showNumbers);
   }, [isChecked]);
   return (
     <div className="group relative flex cursor-pointer items-center justify-center text-sm">
@@ -43,13 +44,15 @@ function Clock({ isChecked }: any) {
             <span className="inline-block">
               <section
                 key={num}
-                className="h-[7.2em] w-[0.1em]   absolute bottom-1.5 z-30 origin-bottom   border-t-6 border-white border-solid text-white"
+                className="h-27 w-1/10   absolute bottom-1.5 z-30 origin-bottom   border-t-6 border-white border-solid text-white"
                 style={{ transform: `rotate(calc(${num}*6*5deg))` }}
               >
                 {showNumbers && (
                   <span
-                    className="inline-block absolute"
-                    style={{ transform: `rotate(calc(${num}*(-6*5deg)))` }}
+                    className="inline-block absolute justify-left"
+                    style={{
+                      transform: `translate(-50%, 0%) rotate(calc(${num}*(-6*5deg)))`,
+                    }}
                   >
                     {num}
                   </span>
@@ -64,17 +67,17 @@ function Clock({ isChecked }: any) {
           ></span>
           {/* Second hand */}
           <span
-            className="h-[6.5em] w-[0.09em] bg-teal-600 before:bg-slate-300 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md"
+            className="h-23 w-1/10 bg-teal-600 before:bg-slate-300 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md"
             style={timing.updateSeconds}
           ></span>
           {/* Minute hand */}
           <span
-            className="h-[6.5em] w-[0.2em] bg-slate-600 absolute bottom-1.5 z-20 origin-bottom rounded-md"
+            className="h-22 w-1/5 bg-slate-600 absolute bottom-1.5 z-20 origin-bottom rounded-md"
             style={timing.updateMinutes}
           ></span>
           {/* Hour hand */}
           <span
-            className="h-[4.5em] w-[0.3em] bg-slate-600 absolute bottom-1.5 z-10 origin-bottom divide-zinc-100 rounded-md"
+            className="h-15 w-1/4 bg-slate-600 absolute bottom-1.5 z-10 origin-bottom divide-zinc-100 rounded-md"
             style={timing.updateHours}
           ></span>
         </section>
