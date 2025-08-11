@@ -101,6 +101,7 @@ function App() {
             <Select
               options={options}
               styles={customStyles}
+              className="z-100"
               onChange={(option: any) => {
                 setTimeZone(option);
               }}
