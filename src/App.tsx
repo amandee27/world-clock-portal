@@ -18,6 +18,11 @@ let theme = {
   },
 };
 
+interface CountryTimeStamp {
+  value: string;
+  label: string;
+}
+
 let size = {
   key: "medium",
   value: {
@@ -52,24 +57,30 @@ const customStyles = {
 };
 
 function App() {
-  const [count, setCount] = useState<number[]>([1]);
   const [isChecked, setIsChecked] = useState(false);
-  const [timezone, setTimeZone] = useState<{
-    value: string;
-    label: string | undefined;
-  }>({ value: "", label: "" });
+  const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>([
+    {
+      value: "",
+      label: "",
+    },
+  ]);
+  const [timezone, setTimeZone] = useState<CountryTimeStamp>({
+    value: "",
+    label: "",
+  });
   const [options, setOptions] = useState<
     { value: string; label: string | undefined }[]
   >([]);
 
   const handleCheckboxChange = (event: any) => {
-    console.log("Check box checked");
     setIsChecked(event.target.checked);
   };
 
   const addClock = () => {
-    setCount([...count, count.length + 1]);
-    //setShow(true);
+    setTimezoneList([
+      ...timeZoneList,
+      { value: timezone.value, label: timezone.label },
+    ]);
   };
 
   useEffect(() => {
@@ -123,9 +134,16 @@ function App() {
       </div>
 
       <div className="container m-auto grid gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {count.map((value) => (
-          <div className="sm:scale-75 md:scale-75 lg:scale-75">
-            <Clock key={value} isChecked={isChecked}></Clock>
+        {timeZoneList.map((timezone: CountryTimeStamp) => (
+          <div
+            key={timezone.value}
+            className="sm:scale-75 md:scale-75 lg:scale-75"
+          >
+            <Clock
+              key={timezone.value}
+              timezone={timezone}
+              isChecked={isChecked}
+            ></Clock>
           </div>
         ))}
       </div>
