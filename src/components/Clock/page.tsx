@@ -51,7 +51,7 @@ function Clock({ timezone, isChecked }: any) {
 
   return (
     <div className="group relative flex cursor-pointer items-center justify-center text-sm">
-      <div className="w-56 h-56 bg-black text-slate-800 relative flex items-center justify-center rounded-full">
+      <div className="w-56 h-56 shrink-0 grow-0 bg-black text-slate-800 relative flex items-center justify-center rounded-full">
         <section className="box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); absolute z-50 flex h-4 w-4 justify-center">
           {clockNumbers.map((num) => (
             <span key={num} className="inline-block">
