@@ -18,6 +18,57 @@ let theme = {
   },
 };
 
+let clockPhases = [
+  {
+    key: "Theme 1",
+    value: {
+      main: "bg-slate-300 text-slate-800",
+      shadow: "shadow-xl shadow-slate-400",
+      hand: {
+        center: "bg-red-600",
+        second: "bg-red-600",
+        minute: "bg-black",
+        hour: "bg-black",
+      },
+      numbers: "bg-black",
+      marks: "border-black text-black border-t-6 border-solid",
+      clockFace: "bg-white",
+    },
+  },
+  {
+    key: "Theme 2",
+    value: {
+      main: "bg-slate-300 text-slate-800",
+      shadow: "shadow-xl shadow-slate-400",
+      hand: {
+        center: "bg-yellow-500",
+        second: "bg-yellow-500",
+        minute: "bg-black",
+        hour: "bg-red-600",
+      },
+      numbers: "bg-black",
+      marks: "border-black text-black border-t-6 border-solid",
+      clockFace: "bg-white/50",
+    },
+  },
+  {
+    key: "Theme 3",
+    value: {
+      main: "bg-slate-300 text-slate-800",
+      shadow: "shadow-xl shadow-slate-400",
+      hand: {
+        center: "bg-yellow-300",
+        second: "bg-yellow-300",
+        minute: "bg-red-600",
+        hour: "bg-white",
+      },
+      numbers: "bg-black",
+      marks: "border-white text-white border-t-6 border-solid",
+      clockFace: "bg-blue-950",
+    },
+  },
+];
+
 interface CountryTimeStamp {
   value: string;
   label: string;
@@ -71,6 +122,7 @@ function App() {
   const [options, setOptions] = useState<
     { value: string; label: string | undefined }[]
   >([]);
+  const [theme, setTheme] = useState(clockPhases[2]);
 
   const handleCheckboxChange = (event: any) => {
     setIsChecked(event.target.checked);
@@ -81,6 +133,10 @@ function App() {
       ...timeZoneList,
       { value: timezone.value, label: timezone.label },
     ]);
+  };
+
+  const selectTheme = (theme: any) => {
+    setTheme(theme);
   };
 
   useEffect(() => {
@@ -131,6 +187,17 @@ function App() {
               Show numbers
             </label>
           </div>
+          <div className="flex-end">
+            {clockPhases.map((theme) => (
+              <button
+                key={theme.key}
+                onClick={() => selectTheme(theme)}
+                className="bg-blue-950 hover:opacity-75 text-white hover:text-white text-xs border border-white hover:border-white w-15 h-5"
+              >
+                {theme.key}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -144,6 +211,7 @@ function App() {
               key={timezone.value}
               timezone={timezone}
               isChecked={isChecked}
+              theme={theme}
             ></Clock>
           </div>
         ))}

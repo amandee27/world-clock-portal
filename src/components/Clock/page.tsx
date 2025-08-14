@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-function Clock({ timezone, isChecked }: any) {
+
+function Clock({ timezone, isChecked, theme }: any) {
   const [currentTime, setCurrentTime] = useState<Date>(
     timezone.value
       ? new Date(
@@ -9,6 +10,7 @@ function Clock({ timezone, isChecked }: any) {
         )
       : new Date()
   );
+  const [clockTheme, setClockTheme] = useState(theme);
   const [showNumbers, setShowNumbers] = useState(false);
   const [timing, setTiming] = useState({
     updateSeconds: {},
@@ -71,17 +73,22 @@ function Clock({ timezone, isChecked }: any) {
       setOffsetHour(offsetHour);
     }
   }, []);
+  useEffect(() => {
+    setClockTheme(theme);
+  }, [theme]);
 
   return (
     <div>
       <div className="group relative flex cursor-pointer items-center justify-center text-sm">
-        <div className="w-56 h-56 shrink-0 grow-0 bg-black text-slate-800 relative flex items-center justify-center rounded-full">
+        <div
+          className={`${clockTheme.value.clockFace} w-56 h-56 shrink-0 grow-0 relative flex items-center justify-center rounded-full`}
+        >
           <section className="box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); absolute z-50 flex h-4 w-4 justify-center">
             {clockNumbers.map((num) => (
               <span key={num} className="inline-block">
                 <section
                   key={num}
-                  className="h-27 w-1/10   absolute bottom-1.5 z-30 origin-bottom   border-t-6 border-white border-solid text-white"
+                  className={`${clockTheme.value.marks} h-27 w-1/10   absolute bottom-1.5 z-30 origin-bottom`}
                   style={{ transform: `rotate(calc(${num}*6*5deg))` }}
                 >
                   {showNumbers && (
@@ -100,21 +107,21 @@ function Clock({ timezone, isChecked }: any) {
 
             {/* Clock center */}
             <span
-              className={`h-2 w-2 bottom-[1px] bg-teal-600 absolute z-50 flex rounded-full`}
+              className={`${clockTheme.value.hand.center} h-2.5 w-2.5 bottom-[1px] absolute z-50 flex rounded-full`}
             ></span>
             {/* Second hand */}
             <span
-              className="h-23 w-1/10 bg-teal-600 before:bg-slate-300 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md"
+              className={`${clockTheme.value.hand.second} h-23 w-1/10 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md`}
               style={timing.updateSeconds}
             ></span>
             {/* Minute hand */}
             <span
-              className="h-22 w-1/5 bg-slate-600 absolute bottom-1.5 z-20 origin-bottom rounded-md"
+              className={`${clockTheme.value.hand.minute} h-22 w-1/6 absolute bottom-1.5 z-20 origin-bottom rounded-md`}
               style={timing.updateMinutes}
             ></span>
             {/* Hour hand */}
             <span
-              className="h-15 w-1/4 bg-slate-600 absolute bottom-1.5 z-10 origin-bottom divide-zinc-100 rounded-md"
+              className={`${clockTheme.value.hand.hour} h-15 w-1/5 absolute bottom-1.5 z-10 origin-bottom divide-zinc-100 rounded-md`}
               style={timing.updateHours}
             ></span>
           </section>
