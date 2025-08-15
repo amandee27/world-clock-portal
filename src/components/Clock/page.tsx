@@ -2,14 +2,8 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-function Clock({ timezone, isChecked, theme }: any) {
-  const [currentTime, setCurrentTime] = useState<Date>(
-    timezone.value
-      ? new Date(
-          moment.tz(moment(), timezone.value).format("MM/DD/YYYY HH:mm:ss")
-        )
-      : new Date()
-  );
+function Clock({ timezone, isChecked, theme, currentDateTime }: any) {
+  const [currentTime, setCurrentTime] = useState(currentDateTime);
   const [clockTheme, setClockTheme] = useState(theme);
   const [showNumbers, setShowNumbers] = useState(false);
   const [timing, setTiming] = useState({
@@ -19,20 +13,15 @@ function Clock({ timezone, isChecked, theme }: any) {
   });
   const [offsetHour, setOffsetHour] = useState(0);
   const [day, setDay] = useState("");
-  const updateTime = () => {
-    if (timezone.value) {
-      setCurrentTime(
-        new Date(
-          moment.tz(moment(), timezone.value).format("MM/DD/YYYY HH:mm:ss")
-        )
-      );
-    } else setCurrentTime(new Date());
-  };
-  useEffect(() => {
-    const interval = setInterval(updateTime, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  useEffect(() => {
+    setCurrentTime(
+      new Date(
+        moment.tz(moment(), timezone.value).format("MM/DD/YYYY HH:mm:ss")
+      )
+    );
+  }, [currentDateTime]);
+
   useEffect(() => {
     setTiming({
       updateSeconds: {

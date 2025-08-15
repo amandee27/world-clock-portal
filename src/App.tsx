@@ -119,6 +119,7 @@ function App() {
     value: "",
     label: "",
   });
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [options, setOptions] = useState<
     { value: string; label: string | undefined }[]
   >([]);
@@ -148,6 +149,15 @@ function App() {
 
     setOptions(mapOptions);
   }, []);
+
+  const updateTime = () => {
+    setCurrentDateTime(new Date());
+  };
+
+  useEffect(() => {
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, [timezone]);
 
   return (
     <div className="h-screen max-w-full bg-blue-950 p-4">
@@ -212,6 +222,7 @@ function App() {
               timezone={timezone}
               isChecked={isChecked}
               theme={theme}
+              currentDateTime={currentDateTime}
             ></Clock>
           </div>
         ))}
