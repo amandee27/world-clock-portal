@@ -173,7 +173,7 @@ function App() {
   }, [timezone]);
 
   return (
-    <div className="h-screen max-w-full bg-blue-950 p-4">
+    <div className="h-full max-w-full bg-blue-950 p-4">
       <div>
         <div className="flex  justify-center gap-2 mb-10">
           <div className="w-50">
