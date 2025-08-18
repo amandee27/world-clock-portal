@@ -125,12 +125,11 @@ function App() {
   const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>(() => {
     const list = localStorage.getItem("timeZoneList");
     const timeZoneObj = list && JSON.parse(list);
-    console.log(timeZoneObj);
     return (
       timeZoneObj || [
         {
-          value: "",
-          label: "",
+          value: "local",
+          label: "local",
         },
       ]
     );
@@ -162,6 +161,13 @@ function App() {
 
   const selectTheme = (theme: any) => {
     setTheme(theme);
+  };
+
+  const deleteClock = (timezoneName: string) => {
+    let filteredTimeZoneList = timeZoneList.filter(
+      (timezone) => timezone.label !== timezoneName
+    );
+    setTimezoneList(filteredTimeZoneList);
   };
 
   useEffect(() => {
@@ -238,8 +244,9 @@ function App() {
       <div className="container m-auto grid gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {timeZoneList.map((timezone: CountryTimeStamp) => (
           <div
-            key={timezone.value}
+            key={timezone.label}
             className="sm:scale-75 md:scale-75 lg:scale-75"
+            onClick={() => deleteClock(timezone.label)}
           >
             <Clock
               key={timezone.value}
