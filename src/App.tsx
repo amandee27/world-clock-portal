@@ -122,12 +122,19 @@ const customStyles = {
 
 function App() {
   const [isChecked, setIsChecked] = useState(false);
-  const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>([
-    {
-      value: "",
-      label: "",
-    },
-  ]);
+  const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>(() => {
+    const list = localStorage.getItem("timeZoneList");
+    const timeZoneObj = list && JSON.parse(list);
+    console.log(timeZoneObj);
+    return (
+      timeZoneObj || [
+        {
+          value: "",
+          label: "",
+        },
+      ]
+    );
+  });
   const [timezone, setTimeZone] = useState<CountryTimeStamp>({
     value: "",
     label: "",
@@ -148,6 +155,10 @@ function App() {
       { value: timezone.value, label: timezone.label },
     ]);
   };
+
+  useEffect(() => {
+    localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
+  }, [timeZoneList]);
 
   const selectTheme = (theme: any) => {
     setTheme(theme);
