@@ -99,11 +99,24 @@ const customStyles = {
     padding: "none",
     paddingTop: "0px",
     paddingBottom: "0px",
+    borderRadius: "none",
+    boxShadow: "none",
+    boxSizing: "none",
   }),
-  option: (provided: any) => ({
+  option: (provided: any, state: any) => ({
     ...provided,
     fontSize: "small",
     color: "grey",
+    backgroundColor: state.isSelected ? "rgba(189,197,209,.3)" : "white",
+    "&:hover": {
+      backgroundColor: state.isSelected
+        ? "rgba(189,197,209,.3)"
+        : "rgb(222, 235, 255)",
+    },
+  }),
+  menu: (provided: any) => ({
+    ...provided,
+    borderRadius: "none",
   }),
 };
 
