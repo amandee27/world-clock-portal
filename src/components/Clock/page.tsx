@@ -118,7 +118,7 @@ function Clock({ timezone, isChecked, theme, currentDateTime }: any) {
       </div>
       <div>
         <h1 className="text-l font-semibold text-stone-50 mt-4">
-          {timezone.label}
+          {timezone.value ? timezone.label : "Local"}
         </h1>
         <p className="text-stone-50">
           {day}
