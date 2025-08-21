@@ -3,6 +3,7 @@ import "./App.css";
 import moment from "moment-timezone";
 import Clock from "./components/Clock/page";
 import Select from "react-select";
+import { ReactSortable } from "react-sortablejs";
 
 let theme = {
   key: "light",
@@ -70,6 +71,7 @@ let clockPhases = [
 ];
 
 interface CountryTimeStamp {
+  id: string;
   value: string;
   label: string;
 }
@@ -128,6 +130,7 @@ function App() {
     return (
       timeZoneObj || [
         {
+          id: "local",
           value: "",
           label: "",
         },
@@ -137,6 +140,7 @@ function App() {
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [timezone, setTimeZone] = useState<CountryTimeStamp>({
+    id: "local",
     value: "",
     label: "",
   });
@@ -153,7 +157,7 @@ function App() {
   const addClock = () => {
     setTimezoneList([
       ...timeZoneList,
-      { value: timezone.value, label: timezone.label },
+      { id: timezone.label, value: timezone.value, label: timezone.label },
     ]);
   };
 
@@ -169,7 +173,6 @@ function App() {
     let filteredTimeZoneList = timeZoneList.filter(
       (timezone) => timezone.label !== timezoneName || timezone.label === ""
     );
-
     setTimezoneList(filteredTimeZoneList);
     setShowDeleteBtn(true);
   };
@@ -244,11 +247,14 @@ function App() {
           </div>
         </div>
       </div>
-
-      <div className="container m-auto grid gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {timeZoneList.map((timezone: CountryTimeStamp) => (
+      <ReactSortable
+        list={timeZoneList}
+        setList={setTimezoneList}
+        className="grid-container"
+      >
+        {timeZoneList.map((timezone) => (
           <div
-            key={timezone.label}
+            key={timezone.id}
             className="sm:scale-75 md:scale-75 lg:scale-75"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
@@ -256,7 +262,7 @@ function App() {
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 <Clock
-                  key={timezone.value}
+                  key={timezone.id}
                   timezone={timezone}
                   isChecked={isChecked}
                   theme={theme}
@@ -273,12 +279,31 @@ function App() {
                       xmlns="http://www.w3.org/2000/svg"
                       x="0px"
                       y="0px"
-                      width="25"
-                      height="25"
-                      viewBox="0 0 30 30"
+                      width="20"
+                      height="20"
+                      viewBox="0,0,256,256"
                       style={{ fill: "#FFFFFF" }}
                     >
-                      <path d="M 14.984375 2.4863281 A 1.0001 1.0001 0 0 0 14 3.5 L 14 4 L 8.5 4 A 1.0001 1.0001 0 0 0 7.4863281 5 L 6 5 A 1.0001 1.0001 0 1 0 6 7 L 24 7 A 1.0001 1.0001 0 1 0 24 5 L 22.513672 5 A 1.0001 1.0001 0 0 0 21.5 4 L 16 4 L 16 3.5 A 1.0001 1.0001 0 0 0 14.984375 2.4863281 z M 6 9 L 7.7929688 24.234375 C 7.9109687 25.241375 8.7633438 26 9.7773438 26 L 20.222656 26 C 21.236656 26 22.088031 25.241375 22.207031 24.234375 L 24 9 L 6 9 z"></path>
+                      <g
+                        fill="#ffffff"
+                        fillRule="nonzero"
+                        stroke="none"
+                        strokeWidth="1"
+                        strokeLinecap="butt"
+                        strokeLinejoin="miter"
+                        strokeMiterlimit="10"
+                        strokeDasharray=""
+                        strokeDashoffset="0"
+                        fontFamily="none"
+                        fontWeight="none"
+                        fontSize="none"
+                        textAnchor="none"
+                        style={{ mixBlendMode: "normal" }}
+                      >
+                        <g transform="scale(8.53333,8.53333)">
+                          <path d="M15,3c-6.627,0 -12,5.373 -12,12c0,6.627 5.373,12 12,12c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12zM16.414,15c0,0 3.139,3.139 3.293,3.293c0.391,0.391 0.391,1.024 0,1.414c-0.391,0.391 -1.024,0.391 -1.414,0c-0.154,-0.153 -3.293,-3.293 -3.293,-3.293c0,0 -3.139,3.139 -3.293,3.293c-0.391,0.391 -1.024,0.391 -1.414,0c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.153,-0.154 3.293,-3.293 3.293,-3.293c0,0 -3.139,-3.139 -3.293,-3.293c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.391,-0.391 1.024,-0.391 1.414,0c0.154,0.153 3.293,3.293 3.293,3.293c0,0 3.139,-3.139 3.293,-3.293c0.391,-0.391 1.024,-0.391 1.414,0c0.391,0.391 0.391,1.024 0,1.414c-0.153,0.154 -3.293,3.293 -3.293,3.293z"></path>
+                        </g>
+                      </g>
                     </svg>
                   </button>
                 )}
@@ -286,7 +311,7 @@ function App() {
             </div>
           </div>
         ))}
-      </div>
+      </ReactSortable>
     </div>
   );
 }
