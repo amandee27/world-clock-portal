@@ -149,6 +149,8 @@ function App() {
     { value: string; label: string | undefined }[]
   >([]);
   const [theme, setTheme] = useState(clockPhases[2]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubOpen, setSubOpen] = useState(false);
 
   const handleCheckboxChange = (event: any) => {
     setIsChecked(event.target.checked);
@@ -167,6 +169,7 @@ function App() {
 
   const selectTheme = (theme: any) => {
     setTheme(theme);
+    setSubOpen(false);
   };
 
   const deleteClock = (timezoneName: string) => {
@@ -196,122 +199,198 @@ function App() {
     return () => clearInterval(interval);
   }, [timezone]);
 
-  return (
-    <div className="h-screen max-w-full bg-blue-950 p-4">
-      <div>
-        <div className="flex  justify-center gap-2 mb-10">
-          <div className="w-50">
-            <Select
-              options={options}
-              styles={customStyles}
-              className="z-100"
-              onChange={(option: any) => {
-                setTimeZone(option);
-              }}
-            />
-          </div>
-          <div className="content-center">
-            <button
-              className="bg-white hieght-3 hover:bg-gray-100 text-gray-500 text-xs  w-10 h-6 border border-gray-400 rounded shadow"
-              onClick={addClock}
-            >
-              Add
-            </button>
-          </div>
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
-          <div className="content-center" dir="ltr">
-            <input
-              id="default-checkbox"
-              type="checkbox"
-              onChange={handleCheckboxChange}
-              checked={isChecked}
-              className="text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              htmlFor="default-checkbox"
-              className="ms-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-            >
-              Show numbers
-            </label>
-          </div>
-          <div className="flex-end">
-            {clockPhases.map((theme) => (
+  const toggleSubDropDown = () => {
+    setSubOpen(!isSubOpen);
+  };
+
+  return (
+    <div>
+      <div className="h-screen max-w-full bg-blue-950 p-4">
+        <div>
+          <div className="flex justify-center gap-2 mb-10">
+            <div className="w-50">
+              <Select
+                options={options}
+                styles={customStyles}
+                className="z-100"
+                onChange={(option: any) => {
+                  setTimeZone(option);
+                }}
+              />
+            </div>
+            <div className="flex content-center ">
               <button
-                key={theme.key}
-                onClick={() => selectTheme(theme)}
-                className="bg-blue-950 hover:opacity-75 text-white hover:text-white text-xs border border-white hover:border-white w-15 h-5"
+                className="bg-white hieght-3 hover:bg-gray-100 text-gray-500 text-xs  w-10 h-6 border border-gray-400 rounded shadow"
+                onClick={addClock}
               >
-                {theme.key}
+                Add
               </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      <ReactSortable
-        list={timeZoneList}
-        setList={setTimezoneList}
-        className="grid-container"
-      >
-        {timeZoneList.map((timezone) => (
-          <div
-            key={timezone.id}
-            className="sm:scale-75 md:scale-75 lg:scale-75"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            <div className="grid grid-cols-3">
-              <div className="col-span-2">
-                <Clock
-                  key={timezone.id}
-                  timezone={timezone}
-                  isChecked={isChecked}
-                  theme={theme}
-                  currentDateTime={currentDateTime}
-                ></Clock>
-              </div>
-              <div className="">
-                {isHovering && timezone.value !== "" && (
-                  <button
-                    className="text-white	"
-                    onClick={() => deleteClock(timezone.label)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      x="0px"
-                      y="0px"
-                      width="20"
-                      height="20"
-                      viewBox="0,0,256,256"
-                      style={{ fill: "#FFFFFF" }}
-                    >
-                      <g
-                        fill="#ffffff"
-                        fillRule="nonzero"
-                        stroke="none"
-                        strokeWidth="1"
-                        strokeLinecap="butt"
-                        strokeLinejoin="miter"
-                        strokeMiterlimit="10"
-                        strokeDasharray=""
-                        strokeDashoffset="0"
-                        fontFamily="none"
-                        fontWeight="none"
-                        fontSize="none"
-                        textAnchor="none"
-                        style={{ mixBlendMode: "normal" }}
+            </div>
+            <div className="w-44">
+              <button
+                id="dropdownCheckboxButton"
+                onClick={toggleDropdown}
+                className="text-gray-500 bg-white hover:bg-blue-100 focus:ring-1 focus:outline-none focus:ring-blue-300 text-sm inline-flex items-center justify-between dark:bg-white dark:hover:bg-blue-100 dark:focus:ring-blue-800 w-44 px-5 py-2.5"
+                type="button"
+              >
+                Clock Settings{" "}
+                <svg
+                  className="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+
+              {isOpen && (
+                <div
+                  id="mainDropdown"
+                  className={`z-10  w-44 bg-white  shadow-sm dark:bg-gray-700 dark:divide-gray-600`}
+                >
+                  <ul className="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200">
+                    <li>
+                      <div className="flex items-center dark:hover:bg-gray-600 px-4 py-2">
+                        <input
+                          id="default-checkbox"
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          checked={isChecked}
+                          className="text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label
+                          htmlFor="default-checkbox"
+                          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          show numbers
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <button
+                        onClick={toggleSubDropDown}
+                        type="button"
+                        className=" flex items-center justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
-                        <g transform="scale(8.53333,8.53333)">
-                          <path d="M15,3c-6.627,0 -12,5.373 -12,12c0,6.627 5.373,12 12,12c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12zM16.414,15c0,0 3.139,3.139 3.293,3.293c0.391,0.391 0.391,1.024 0,1.414c-0.391,0.391 -1.024,0.391 -1.414,0c-0.154,-0.153 -3.293,-3.293 -3.293,-3.293c0,0 -3.139,3.139 -3.293,3.293c-0.391,0.391 -1.024,0.391 -1.414,0c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.153,-0.154 3.293,-3.293 3.293,-3.293c0,0 -3.139,-3.139 -3.293,-3.293c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.391,-0.391 1.024,-0.391 1.414,0c0.154,0.153 3.293,3.293 3.293,3.293c0,0 3.139,-3.139 3.293,-3.293c0.391,-0.391 1.024,-0.391 1.414,0c0.391,0.391 0.391,1.024 0,1.414c-0.153,0.154 -3.293,3.293 -3.293,3.293z"></path>
-                        </g>
-                      </g>
-                    </svg>
-                  </button>
-                )}
-              </div>
+                        Clock Themes
+                        <svg
+                          className="w-2.5 h-2.5 ms-3 rtl:rotate-180"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 6 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m1 9 4-4-4-4"
+                          />
+                        </svg>
+                      </button>
+                      {isSubOpen && (
+                        <ul
+                          className="w-38 py-2 text-sm text-gray-700 dark:text-gray-200  "
+                          aria-labelledby="doubleDropdownButton"
+                        >
+                          {clockPhases.map((theme) => (
+                            <li>
+                              <a
+                                onClick={() => selectTheme(theme)}
+                                className="block px-4 py-2 bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white"
+                              >
+                                {theme.key}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
-        ))}
-      </ReactSortable>
+        </div>
+        <ReactSortable
+          list={timeZoneList}
+          setList={setTimezoneList}
+          className="grid-container"
+        >
+          {timeZoneList.map((timezone) => (
+            <div
+              key={timezone.id}
+              className="sm:scale-75 md:scale-75 lg:scale-75"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              <div className="grid grid-cols-3 ">
+                <div className="col-span-2">
+                  <Clock
+                    key={timezone.id}
+                    timezone={timezone}
+                    isChecked={isChecked}
+                    theme={theme}
+                    currentDateTime={currentDateTime}
+                  ></Clock>
+                </div>
+                <div className="">
+                  {isHovering && timezone.value !== "" && (
+                    <button
+                      className="text-white	"
+                      onClick={() => deleteClock(timezone.label)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="20"
+                        height="20"
+                        viewBox="0,0,256,256"
+                        style={{ fill: "#FFFFFF" }}
+                      >
+                        <g
+                          fill="#ffffff"
+                          fillRule="nonzero"
+                          stroke="none"
+                          strokeWidth="1"
+                          strokeLinecap="butt"
+                          strokeLinejoin="miter"
+                          strokeMiterlimit="10"
+                          strokeDasharray=""
+                          strokeDashoffset="0"
+                          fontFamily="none"
+                          fontWeight="none"
+                          fontSize="none"
+                          textAnchor="none"
+                          style={{ mixBlendMode: "normal" }}
+                        >
+                          <g transform="scale(8.53333,8.53333)">
+                            <path d="M15,3c-6.627,0 -12,5.373 -12,12c0,6.627 5.373,12 12,12c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12zM16.414,15c0,0 3.139,3.139 3.293,3.293c0.391,0.391 0.391,1.024 0,1.414c-0.391,0.391 -1.024,0.391 -1.414,0c-0.154,-0.153 -3.293,-3.293 -3.293,-3.293c0,0 -3.139,3.139 -3.293,3.293c-0.391,0.391 -1.024,0.391 -1.414,0c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.153,-0.154 3.293,-3.293 3.293,-3.293c0,0 -3.139,-3.139 -3.293,-3.293c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.391,-0.391 1.024,-0.391 1.414,0c0.154,0.153 3.293,3.293 3.293,3.293c0,0 3.139,-3.139 3.293,-3.293c0.391,-0.391 1.024,-0.391 1.414,0c0.391,0.391 0.391,1.024 0,1.414c-0.153,0.154 -3.293,3.293 -3.293,3.293z"></path>
+                          </g>
+                        </g>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </ReactSortable>
+      </div>
     </div>
   );
 }
