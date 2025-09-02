@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 import Clock from "./components/Clock/page";
 import Select from "react-select";
 import { ReactSortable } from "react-sortablejs";
+import Popup from "./components/Modal/Popup";
 
 let theme = {
   key: "light",
@@ -156,7 +157,9 @@ function App() {
       ]
     );
   });
-  const [showDeleteBtn, setShowDeleteBtn] = useState(false);
+  const [popup, setPopup] = useState(false);
+  const [confirmDeletion, setConfirmDeletion] = useState(false);
+  const [deleteTimezone, setDeleteTimezone] = useState("");
   const [isHovering, setIsHovering] = useState(false);
   const [timezone, setTimeZone] = useState<CountryTimeStamp>({
     id: "local",
@@ -204,11 +207,15 @@ function App() {
   };
 
   const deleteClock = (timezoneName: string) => {
-    let filteredTimeZoneList = timeZoneList.filter(
-      (timezone) => timezone.label !== timezoneName || timezone.label === ""
-    );
-    setTimezoneList(filteredTimeZoneList);
-    setShowDeleteBtn(true);
+    setDeleteTimezone(timezoneName);
+    setPopup(true);
+    if (confirmDeletion) {
+      let filteredTimeZoneList = timeZoneList.filter(
+        (timezone) => timezone.label !== timezoneName || timezone.label === ""
+      );
+      setTimezoneList(filteredTimeZoneList);
+      setConfirmDeletion(false);
+    }
   };
 
   useEffect(() => {
@@ -247,7 +254,7 @@ function App() {
               <Select
                 options={options}
                 styles={customStyles}
-                className="z-100"
+                className="z-60"
                 onChange={(option: any) => {
                   setTimeZone(option);
                 }}
@@ -356,6 +363,13 @@ function App() {
             </div>
           </div>
         </div>
+        {popup && (
+          <Popup
+            deleteTimezone={deleteTimezone}
+            setPopup={setPopup}
+            setConfirmDeletion={setConfirmDeletion}
+          ></Popup>
+        )}
         <ReactSortable
           list={timeZoneList}
           setList={setTimezoneList}
