@@ -183,10 +183,13 @@ function App() {
   };
 
   const addClock = () => {
-    setTimezoneList([
-      ...timeZoneList,
-      { id: timezone.label, value: timezone.value, label: timezone.label },
-    ]);
+    const exists = timeZoneList.some((item) => item.label === timezone.label);
+    if (!exists) {
+      setTimezoneList([
+        ...timeZoneList,
+        { id: timezone.label, value: timezone.value, label: timezone.label },
+      ]);
+    }
   };
 
   useEffect(() => {
