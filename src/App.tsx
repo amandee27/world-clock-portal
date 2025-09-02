@@ -189,6 +189,8 @@ function App() {
         ...timeZoneList,
         { id: timezone.label, value: timezone.value, label: timezone.label },
       ]);
+    } else {
+      alert("This clock is already in the list");
     }
   };
 
