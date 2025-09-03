@@ -54,8 +54,6 @@ function useClickOutside(
 }
 
 export default function Navbar(props: any) {
-  //   const [open, setOpen] = useState(false);
-  //   const dropdownRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setSubOpen] = useState(false);
   const [options, setOptions] = useState<
@@ -122,27 +120,6 @@ export default function Navbar(props: any) {
       </div>
 
       {/* Right Dropdown */}
-      {/* <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={() => setOpen(!open)}
-          className="flex items-center gap-1 bg-gray-700 px-3 py-2 rounded-lg hover:bg-gray-600"
-        >
-          User
-        </button>
-        {open && (
-          <ul className="absolute mt-2 right-0 w-40 bg-white text-gray-800 shadow-lg rounded-lg">
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Profile
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Settings
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Logout
-            </li>
-          </ul>
-        )}
-      </div> */}
       <div className="w-44 relative" ref={wrapperRef}>
         <button
           id="dropdownCheckboxButton"

@@ -137,9 +137,6 @@ function App() {
         addClock={addClock}
       ></Navbar>
       <div className="h-screen max-w-full  p-4">
-        <div>
-          <div className="flex justify-center gap-2 mb-10"></div>
-        </div>
         {popup && (
           <Popup
             deleteTimezone={deleteTimezone}
