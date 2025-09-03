@@ -27,7 +27,7 @@ function Popup(props: any) {
             <button
               className="bg-black hover:bg-gray-500 text-white  py-2 px-4 mx-2"
               onClick={() => {
-                props.setConfirmDeletion(true);
+                props.confirmDeleteClock();
                 props.setPopup(false);
               }}
             >
