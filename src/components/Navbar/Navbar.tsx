@@ -60,6 +60,7 @@ export default function Navbar(props: any) {
     { value: string; label: string | undefined }[]
   >([]);
 
+  const [selectedZone, setSelectedZone] = useState<any>(null);
   useEffect(() => {
     let mapOptions = moment.tz.names().map((country) => {
       let a = country.match(/[^/]+$/) || [];
@@ -102,9 +103,11 @@ export default function Navbar(props: any) {
         <div className="w-50">
           <Select
             options={options}
+            value={selectedZone}
             styles={customStyles}
             className="z-60"
             onChange={(option: any) => {
+              setSelectedZone(option);
               props.setTimeZone(option);
             }}
           />
