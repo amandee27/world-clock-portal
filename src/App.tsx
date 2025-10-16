@@ -4,6 +4,7 @@ import Clock from "./components/Clock/page";
 import { ReactSortable } from "react-sortablejs";
 import Popup from "./components/Modal/Popup";
 import Navbar from "./components/Navbar/Navbar";
+import moment from "moment-timezone";
 
 let clockPhases = [
   {
@@ -58,8 +59,8 @@ let clockPhases = [
 
 interface CountryTimeStamp {
   id: string;
-  value: string;
-  label: string;
+  value: string | undefined;
+  label: string | undefined;
 }
 
 function App() {
@@ -89,16 +90,37 @@ function App() {
   const [theme, setTheme] = useState(clockPhases[2]);
 
   const addClock = () => {
-    const exists = timeZoneList.some((item) => item.label === timezone.label);
+    const exists =
+      timeZoneList &&
+      timeZoneList.some((item) => item.label === timezone.label);
     if (!exists) {
       setTimezoneList([
         ...timeZoneList,
-        { id: timezone.label, value: timezone.value, label: timezone.label },
+        {
+          id: timezone.label ?? "",
+          value: timezone.value ?? "",
+          label: timezone.label ?? "",
+        },
       ]);
     } else {
       alert("This clock is already in the list");
     }
   };
+
+  useEffect(() => {
+    const localTimezone = moment.tz.guess();
+    let mapOptions = moment.tz.names().map((country) => {
+      let a = country.match(/[^/]+$/) || [];
+      let val = { value: country, label: a[0] };
+      return val;
+    });
+    const defaultOption = mapOptions.find((opt) => opt.value === localTimezone);
+    setTimeZone({
+      id: "local",
+      value: defaultOption?.value,
+      label: defaultOption?.label,
+    });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
@@ -126,7 +148,7 @@ function App() {
   }, [timezone]);
 
   return (
-    <div className="bg-blue-950">
+    <div className=" min-h-full bg-blue-950 ">
       <Navbar
         isChecked={isChecked}
         setIsChecked={setIsChecked}
@@ -136,7 +158,7 @@ function App() {
         setTimeZone={setTimeZone}
         addClock={addClock}
       ></Navbar>
-      <div className="h-screen max-w-full  p-4">
+      <div className="min-h-screen max-w-full  p-4">
         {popup && (
           <Popup
             deleteTimezone={deleteTimezone}
@@ -149,65 +171,33 @@ function App() {
           setList={setTimezoneList}
           className="grid-container"
         >
-          {timeZoneList.map((timezone) => (
-            <div
-              key={timezone.id}
-              className="sm:scale-75 md:scale-75 lg:scale-75"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              <div className="grid grid-cols-3 ">
-                <div className="col-span-2">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 
+            md:grid-cols-3 
+            lg:grid-cols-4 
+            xl:grid-cols-5 gap-6 "
+          >
+            {timeZoneList.map((timezone) => (
+              <div
+                key={timezone.id}
+                className="sm:scale-75 md:scale-75 lg:scale-75"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+              >
+                <div>
                   <Clock
                     key={timezone.id}
                     timezone={timezone}
                     isChecked={isChecked}
                     theme={theme}
                     currentDateTime={currentDateTime}
+                    isHovering={isHovering}
+                    deleteClock={deleteClock}
                   ></Clock>
                 </div>
-                <div className="">
-                  {isHovering && timezone.value !== "" && (
-                    <button
-                      className="text-white	"
-                      onClick={() => deleteClock(timezone.label)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        x="0px"
-                        y="0px"
-                        width="20"
-                        height="20"
-                        viewBox="0,0,256,256"
-                        style={{ fill: "#FFFFFF" }}
-                      >
-                        <g
-                          fill="#ffffff"
-                          fillRule="nonzero"
-                          stroke="none"
-                          strokeWidth="1"
-                          strokeLinecap="butt"
-                          strokeLinejoin="miter"
-                          strokeMiterlimit="10"
-                          strokeDasharray=""
-                          strokeDashoffset="0"
-                          fontFamily="none"
-                          fontWeight="none"
-                          fontSize="none"
-                          textAnchor="none"
-                          style={{ mixBlendMode: "normal" }}
-                        >
-                          <g transform="scale(8.53333,8.53333)">
-                            <path d="M15,3c-6.627,0 -12,5.373 -12,12c0,6.627 5.373,12 12,12c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12zM16.414,15c0,0 3.139,3.139 3.293,3.293c0.391,0.391 0.391,1.024 0,1.414c-0.391,0.391 -1.024,0.391 -1.414,0c-0.154,-0.153 -3.293,-3.293 -3.293,-3.293c0,0 -3.139,3.139 -3.293,3.293c-0.391,0.391 -1.024,0.391 -1.414,0c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.153,-0.154 3.293,-3.293 3.293,-3.293c0,0 -3.139,-3.139 -3.293,-3.293c-0.391,-0.391 -0.391,-1.024 0,-1.414c0.391,-0.391 1.024,-0.391 1.414,0c0.154,0.153 3.293,3.293 3.293,3.293c0,0 3.139,-3.139 3.293,-3.293c0.391,-0.391 1.024,-0.391 1.414,0c0.391,0.391 0.391,1.024 0,1.414c-0.153,0.154 -3.293,3.293 -3.293,3.293z"></path>
-                          </g>
-                        </g>
-                      </svg>
-                    </button>
-                  )}
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </ReactSortable>
       </div>
     </div>
