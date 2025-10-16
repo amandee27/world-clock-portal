@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
@@ -12,8 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "all-the-cities": "^3.1.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "i18n-iso-countries": "^7.14.0",
+    "luxon": "^3.7.2",
+    "tz-lookup": "^6.1.25"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
