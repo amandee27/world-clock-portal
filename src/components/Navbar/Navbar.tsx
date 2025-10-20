@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import moment from "moment-timezone";
-import Select from "react-select";
+import AsyncSelect from "react-select/async";
 
 const customStyles = {
   control: (provided: any) => ({
@@ -56,20 +55,7 @@ function useClickOutside(
 export default function Navbar(props: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setSubOpen] = useState(false);
-  const [options, setOptions] = useState<
-    { value: string; label: string | undefined }[]
-  >([]);
-
   const [selectedZone, setSelectedZone] = useState<any>(null);
-  useEffect(() => {
-    let mapOptions = moment.tz.names().map((country) => {
-      let a = country.match(/[^/]+$/) || [];
-      let val = { value: country, label: a[0] };
-      return val;
-    });
-
-    setOptions(mapOptions);
-  }, []);
 
   const wrapperRef = useRef(null);
   useClickOutside(
@@ -96,26 +82,53 @@ export default function Navbar(props: any) {
     props.setIsChecked(event.target.checked);
   };
 
+  const fetchLocations = (
+    inputValue: string,
+    callback: (options: { value: string; label: string }[]) => void
+  ) => {
+    fetch(`http://localhost:3000/cities?query=${inputValue}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const options = data.map((city: any) => ({
+          value: city.timezone, // internal value
+          label: `${city.city}, ${city.country} `,
+          offset: `(UTC${city.offset >= 0 ? "+" : ""}${city.offset})`,
+        }));
+        callback(options);
+      });
+  };
+
+  const handleAdd = () => {
+    if (selectedZone) {
+      props.addClock();
+      setSelectedZone(null);
+    }
+  };
   return (
     <nav className="w-full bg-transparent text-white px-4 py-3 flex items-center justify-between">
       {/* Center items */}
       <div className="flex-1 flex justify-center items-center gap-4">
         <div className="w-50">
-          <Select
-            options={options}
+          <AsyncSelect
+            cacheOptions
+            loadOptions={fetchLocations}
             value={selectedZone}
-            styles={customStyles}
-            className="z-60"
-            onChange={(option: any) => {
-              setSelectedZone(option);
-              props.setTimeZone(option);
+            onChange={(option) => {
+              if (option) {
+                setSelectedZone(option);
+                props.setTimeZone(option);
+              }
             }}
+            defaultOptions
+            placeholder="Search"
+            className="z-60"
+            styles={customStyles}
           />
         </div>
         <div className="flex content-center ">
           <button
             className="bg-white hieght-3 hover:bg-gray-100 text-gray-500 text-xs  w-10 h-6 border border-gray-400 rounded shadow"
-            onClick={props.addClock}
+            onClick={handleAdd}
           >
             Add
           </button>

@@ -61,6 +61,7 @@ interface CountryTimeStamp {
   id: string;
   value: string | undefined;
   label: string | undefined;
+  offset: string | undefined;
 }
 
 function App() {
@@ -85,6 +86,7 @@ function App() {
     id: "local",
     value: "",
     label: "",
+    offset: "",
   });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[2]);
@@ -100,6 +102,7 @@ function App() {
           id: timezone.label ?? "",
           value: timezone.value ?? "",
           label: timezone.label ?? "",
+          offset: timezone.offset ?? "",
         },
       ]);
     } else {
@@ -119,6 +122,7 @@ function App() {
       id: "local",
       value: defaultOption?.value,
       label: defaultOption?.label,
+      offset: "",
     });
   }, []);
 

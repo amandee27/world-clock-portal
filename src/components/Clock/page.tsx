@@ -170,8 +170,8 @@ function Clock({
         </h1>
         <p className="text-stone-50">
           {day}
-          {day ? "," : ""} {offsetHour > 0 ? "+" : "-"} {offsetHour}{" "}
-          {offsetHour === 1 || offsetHour === -1 ? "HR" : "HRS"}{" "}
+          {timezone.offset}
+          {timezone.offset === 1 || timezone.offset === -1 ? "hr" : "hrs"}{" "}
         </p>
         <p className="text-stone-50"></p>
       </div>
