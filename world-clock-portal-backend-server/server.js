@@ -16,7 +16,7 @@ const app = express();
 const PORT = 3000;
 
 // Enable CORS (allow frontend like localhost:5173)
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:5174" }));
 
 // --- Load and prepare city data ---
 const MIN_POPULATION = 300000; // filter for "major" cities
