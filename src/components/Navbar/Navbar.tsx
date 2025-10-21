@@ -119,7 +119,7 @@ export default function Navbar(props: any) {
                 props.setTimeZone(option);
               }
             }}
-            defaultOptions
+            defaultOptions={false}
             placeholder="Search"
             className="z-60"
             styles={customStyles}
