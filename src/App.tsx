@@ -91,6 +91,24 @@ function App() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[2]);
 
+  useEffect(() => {
+    const clockSettings = localStorage.getItem("clockSettings");
+    const clockSettingsObj = clockSettings && JSON.parse(clockSettings);
+    if (clockSettingsObj["clockTheme"]) {
+      setTheme(clockSettingsObj["clockTheme"]);
+    }
+    if (clockSettingsObj["showNumbers"]) {
+      setIsChecked(clockSettingsObj["clockTheme"]);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "clockSettings",
+      JSON.stringify({ clockTheme: theme, showNumbers: isChecked })
+    );
+  }, [theme, isChecked]);
+
   const addClock = () => {
     const exists =
       timeZoneList &&
