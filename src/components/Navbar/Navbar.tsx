@@ -5,13 +5,13 @@ const customStyles = {
   control: (provided: any) => ({
     ...provided,
     alignItems: "flex-start",
-    fontSize: "small",
+    fontSize: "medium",
     color: "grey",
     minHeight: "none",
     padding: "none",
     paddingTop: "0px",
     paddingBottom: "0px",
-    borderRadius: "none",
+    borderRadius: "5px",
     boxShadow: "none",
     boxSizing: "none",
   }),
@@ -108,7 +108,7 @@ export default function Navbar(props: any) {
     <nav className="w-full bg-transparent text-white px-4 py-3 flex items-center justify-between">
       {/* Center items */}
       <div className="flex-1 flex justify-center items-center gap-4">
-        <div className="w-50">
+        <div className="w-120">
           <AsyncSelect
             cacheOptions
             loadOptions={fetchLocations}
@@ -120,14 +120,14 @@ export default function Navbar(props: any) {
               }
             }}
             defaultOptions={false}
-            placeholder="Search"
+            placeholder="Search for a city or timezone..."
             className="z-60"
             styles={customStyles}
           />
         </div>
         <div className="flex content-center ">
           <button
-            className="bg-white hieght-3 hover:bg-gray-100 text-gray-500 text-xs  w-10 h-6 border border-gray-400 rounded shadow"
+            className="bg-white  hover:bg-gray-100 text-gray-500 text-sm  w-15 h-8 border border-gray-400 rounded shadow"
             onClick={handleAdd}
           >
             Add
