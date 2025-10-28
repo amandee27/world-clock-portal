@@ -13,14 +13,14 @@ let clockPhases = [
       main: "bg-slate-300 text-slate-800",
       shadow: "shadow-xl shadow-slate-400",
       hand: {
-        center: "bg-red-600",
-        second: "bg-red-600",
-        minute: "bg-black",
-        hour: "bg-black",
+        center: "bg-yellow-300",
+        second: "bg-yellow-300",
+        minute: "bg-red-600",
+        hour: "bg-white",
       },
       numbers: "bg-black",
-      marks: "border-black text-black border-t-6 border-solid",
-      clockFace: "bg-white",
+      marks: "border-white text-white border-t-6 border-solid",
+      clockFace: "bg-blue-950",
     },
   },
   {
@@ -45,14 +45,14 @@ let clockPhases = [
       main: "bg-slate-300 text-slate-800",
       shadow: "shadow-xl shadow-slate-400",
       hand: {
-        center: "bg-yellow-300",
-        second: "bg-yellow-300",
-        minute: "bg-red-600",
-        hour: "bg-white",
+        center: "bg-red-600",
+        second: "bg-red-600",
+        minute: "bg-black",
+        hour: "bg-black",
       },
       numbers: "bg-black",
-      marks: "border-white text-white border-t-6 border-solid",
-      clockFace: "bg-blue-950",
+      marks: "border-black text-black border-t-6 border-solid",
+      clockFace: "bg-white",
     },
   },
 ];
@@ -89,16 +89,26 @@ function App() {
     offset: "",
   });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  const [theme, setTheme] = useState(clockPhases[2]);
+  const [theme, setTheme] = useState(clockPhases[0]);
 
   useEffect(() => {
     const clockSettings = localStorage.getItem("clockSettings");
     const clockSettingsObj = clockSettings && JSON.parse(clockSettings);
-    if (clockSettingsObj["clockTheme"]) {
-      setTheme(clockSettingsObj["clockTheme"]);
-    }
-    if (clockSettingsObj["showNumbers"]) {
-      setIsChecked(clockSettingsObj["clockTheme"]);
+
+    if (clockSettings) {
+      clockSettingsObj["clockTheme"] &&
+        setTheme(clockSettingsObj["clockTheme"]);
+      clockSettingsObj["showNumbers"] &&
+        setIsChecked(clockSettingsObj["showNumbers"]);
+    } else {
+      localStorage.setItem(
+        "clockSettings",
+        JSON.stringify({ clockTheme: theme })
+      );
+      localStorage.setItem(
+        "clockSettings",
+        JSON.stringify({ showNumbers: isChecked })
+      );
     }
   }, []);
 
