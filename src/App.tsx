@@ -90,6 +90,13 @@ function App() {
   });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[0]);
+  const localTimezone = moment.tz.guess();
+  let mapOptions = moment.tz.names().map((country) => {
+    let a = country.match(/[^/]+$/) || [];
+    let val = { value: country, label: a[0] };
+    return val;
+  });
+  const defaultOption = mapOptions.find((opt) => opt.value === localTimezone);
 
   useEffect(() => {
     const clockSettings = localStorage.getItem("clockSettings");
@@ -110,6 +117,12 @@ function App() {
         JSON.stringify({ showNumbers: isChecked })
       );
     }
+    setTimeZone({
+      id: "local",
+      value: defaultOption?.value,
+      label: defaultOption?.label,
+      offset: "",
+    });
   }, []);
 
   useEffect(() => {
@@ -118,6 +131,31 @@ function App() {
       JSON.stringify({ clockTheme: theme, showNumbers: isChecked })
     );
   }, [theme, isChecked]);
+
+  useEffect(() => {
+    localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
+  }, [timeZoneList]);
+
+  useEffect(() => {
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, [timezone]);
+
+  const deleteClock = (timezoneName: string) => {
+    setDeleteTimezone(timezoneName);
+    setPopup(true);
+  };
+
+  const confirmDeleteClock = () => {
+    let filteredTimeZoneList = timeZoneList.filter(
+      (timezone) => timezone.label !== deleteTimezone || timezone.label === ""
+    );
+    setTimezoneList(filteredTimeZoneList);
+  };
+
+  const updateTime = () => {
+    setCurrentDateTime(new Date());
+  };
 
   const addClock = () => {
     const exists =
@@ -137,47 +175,6 @@ function App() {
       alert("This clock is already in the list");
     }
   };
-
-  useEffect(() => {
-    const localTimezone = moment.tz.guess();
-    let mapOptions = moment.tz.names().map((country) => {
-      let a = country.match(/[^/]+$/) || [];
-      let val = { value: country, label: a[0] };
-      return val;
-    });
-    const defaultOption = mapOptions.find((opt) => opt.value === localTimezone);
-    setTimeZone({
-      id: "local",
-      value: defaultOption?.value,
-      label: defaultOption?.label,
-      offset: "",
-    });
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
-  }, [timeZoneList]);
-
-  const deleteClock = (timezoneName: string) => {
-    setDeleteTimezone(timezoneName);
-    setPopup(true);
-  };
-
-  const confirmDeleteClock = () => {
-    let filteredTimeZoneList = timeZoneList.filter(
-      (timezone) => timezone.label !== deleteTimezone || timezone.label === ""
-    );
-    setTimezoneList(filteredTimeZoneList);
-  };
-
-  const updateTime = () => {
-    setCurrentDateTime(new Date());
-  };
-
-  useEffect(() => {
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, [timezone]);
 
   return (
     <div className=" min-h-full bg-blue-950 ">
