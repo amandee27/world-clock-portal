@@ -77,10 +77,10 @@ function Clock({
     <div className="rounded-xl  hover:shadow-lg hover:bg-gray-500/20 transition-all ">
       <div className="relative p-4 flex flex-col items-center justify-between text-sm">
         <div className="absolute top-2 right-2 text-white hover:text-red-400">
-          {isHovering && timezone.value !== "" && (
+          {isHovering && timezone.id !== "local" && (
             <button
               className="text-white	"
-              onClick={() => timezone.label && deleteClock(timezone.label)}
+              onClick={() => deleteClock(timezone.label)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

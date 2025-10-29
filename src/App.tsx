@@ -68,13 +68,16 @@ function App() {
   const [isChecked, setIsChecked] = useState(false);
   const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>(() => {
     const list = localStorage.getItem("timeZoneList");
+    const localtimezone = moment.tz.guess();
     const timeZoneObj = list && JSON.parse(list);
+    const offsetHours = moment.tz(localtimezone).utcOffset() / 60;
     return (
       timeZoneObj || [
         {
           id: "local",
-          value: "",
-          label: "",
+          value: localtimezone,
+          label: (localtimezone.match(/[^/]+$/) || [])[0] + " (local)",
+          offset: `(UTC${offsetHours >= 0 ? "+" : ""}${offsetHours})`,
         },
       ]
     );
@@ -84,13 +87,6 @@ function App() {
   const [isHovering, setIsHovering] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[0]);
-  const localTimezone = moment.tz.guess();
-  let mapOptions = moment.tz.names().map((country) => {
-    let a = country.match(/[^/]+$/) || [];
-    let val = { value: country, label: a[0] };
-    return val;
-  });
-  const defaultOption = mapOptions.find((opt) => opt.value === localTimezone);
 
   useEffect(() => {
     const clockSettings = localStorage.getItem("clockSettings");
@@ -111,12 +107,6 @@ function App() {
         JSON.stringify({ showNumbers: isChecked })
       );
     }
-    // setTimeZone({
-    //   id: "local",
-    //   value: defaultOption?.value,
-    //   label: defaultOption?.label,
-    //   offset: "",
-    // });
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
