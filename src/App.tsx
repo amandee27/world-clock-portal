@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Clock from "./components/Clock/page";
 import { ReactSortable } from "react-sortablejs";
@@ -82,12 +82,6 @@ function App() {
   const [popup, setPopup] = useState(false);
   const [deleteTimezone, setDeleteTimezone] = useState("");
   const [isHovering, setIsHovering] = useState(false);
-  const [timezone, setTimeZone] = useState<CountryTimeStamp>({
-    id: "local",
-    value: "",
-    label: "",
-    offset: "",
-  });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[0]);
   const localTimezone = moment.tz.guess();
@@ -117,12 +111,14 @@ function App() {
         JSON.stringify({ showNumbers: isChecked })
       );
     }
-    setTimeZone({
-      id: "local",
-      value: defaultOption?.value,
-      label: defaultOption?.label,
-      offset: "",
-    });
+    // setTimeZone({
+    //   id: "local",
+    //   value: defaultOption?.value,
+    //   label: defaultOption?.label,
+    //   offset: "",
+    // });
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -135,11 +131,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
   }, [timeZoneList]);
-
-  useEffect(() => {
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, [timezone]);
 
   const deleteClock = (timezoneName: string) => {
     setDeleteTimezone(timezoneName);
@@ -157,7 +148,7 @@ function App() {
     setCurrentDateTime(new Date());
   };
 
-  const addClock = () => {
+  const addClock = (timezone: CountryTimeStamp) => {
     const exists =
       timeZoneList &&
       timeZoneList.some((item) => item.label === timezone.label);
@@ -184,7 +175,6 @@ function App() {
         setTheme={setTheme}
         theme={theme}
         clockPhases={clockPhases}
-        setTimeZone={setTimeZone}
         addClock={addClock}
       ></Navbar>
       <div className="min-h-screen max-w-full  p-4">

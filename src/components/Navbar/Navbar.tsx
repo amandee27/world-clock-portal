@@ -100,7 +100,7 @@ export default function Navbar(props: any) {
 
   const handleAdd = () => {
     if (selectedZone) {
-      props.addClock();
+      props.addClock(selectedZone);
       setSelectedZone(null);
     }
   };
@@ -116,7 +116,6 @@ export default function Navbar(props: any) {
             onChange={(option) => {
               if (option) {
                 setSelectedZone(option);
-                props.setTimeZone(option);
               }
             }}
             defaultOptions={false}
