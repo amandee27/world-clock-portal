@@ -84,7 +84,6 @@ function App() {
   });
   const [popup, setPopup] = useState(false);
   const [deleteTimezone, setDeleteTimezone] = useState("");
-  const [isHovering, setIsHovering] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[0]);
 
@@ -190,8 +189,6 @@ function App() {
               <div
                 key={timezone.id}
                 className="sm:scale-75 md:scale-75 lg:scale-75"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
               >
                 <div>
                   <Clock
@@ -200,7 +197,6 @@ function App() {
                     isChecked={isChecked}
                     theme={theme}
                     currentDateTime={currentDateTime}
-                    isHovering={isHovering}
                     deleteClock={deleteClock}
                   ></Clock>
                 </div>

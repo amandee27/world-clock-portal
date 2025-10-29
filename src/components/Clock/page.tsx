@@ -7,7 +7,6 @@ function Clock({
   isChecked,
   theme,
   currentDateTime,
-  isHovering,
   deleteClock,
 }: any) {
   const [currentTime, setCurrentTime] = useState(currentDateTime);
@@ -18,7 +17,6 @@ function Clock({
     updateMinutes: {},
     updateHours: {},
   });
-  const [offsetHour, setOffsetHour] = useState(0);
   const [day, setDay] = useState("");
 
   useEffect(() => {
@@ -50,12 +48,6 @@ function Clock({
 
   useEffect(() => {
     if (timezone.value) {
-      let offset = moment
-        .parseZone(moment.tz(moment(), timezone.value))
-        .utcOffset();
-      let offsetHour = offset / 60;
-      setOffsetHour(offsetHour);
-
       if (moment(currentTime.getDate()).isSame(new Date().getDate())) {
         setDay("Today");
       } else if (moment(currentTime.getDate()).isAfter(new Date().getDate())) {
@@ -63,10 +55,6 @@ function Clock({
       } else if (moment(currentTime.getDate()).isBefore(new Date().getDate())) {
         setDay("YesterDay");
       }
-    } else {
-      let offset = moment.parseZone(new Date()).utcOffset();
-      let offsetHour = offset / 60;
-      setOffsetHour(offsetHour);
     }
   }, []);
   useEffect(() => {
@@ -77,7 +65,7 @@ function Clock({
     <div className="rounded-xl  hover:shadow-lg hover:bg-gray-500/20 transition-all ">
       <div className="relative p-4 flex flex-col items-center justify-between text-sm">
         <div className="absolute top-2 right-2 text-white hover:text-red-400">
-          {isHovering && timezone.id !== "local" && (
+          {timezone.id !== "local" && (
             <button
               className="text-white	"
               onClick={() => deleteClock(timezone.label)}
