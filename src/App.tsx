@@ -56,6 +56,27 @@ let clockPhases = [
   },
 ];
 
+interface ClockHand {
+  center: string;
+  second: string;
+  minute: string;
+  hour: string;
+}
+
+interface ClockThemeValue {
+  main: string;
+  shadow: string;
+  hand: ClockHand;
+  numbers: string;
+  marks: string;
+  clockFace: string;
+}
+
+export interface ClockPhase {
+  key: string;
+  value: ClockThemeValue;
+}
+
 interface CountryTimeStamp {
   id: string;
   value: string | undefined;
@@ -63,8 +84,16 @@ interface CountryTimeStamp {
   offset: string | undefined;
 }
 
+interface ClockSettings {
+  theme: ClockPhase;
+  showClockNumbers: boolean;
+}
+
 function App() {
-  const [showClockNumbers, setShowClockNumbers] = useState(false);
+  const [settings, setSettings] = useState<ClockSettings>({
+    theme: clockPhases[0],
+    showClockNumbers: false,
+  });
   const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>(() => {
     const list = localStorage.getItem("timeZoneList");
     const localtimezone = moment.tz.guess();
@@ -82,7 +111,6 @@ function App() {
     );
   });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  const [theme, setTheme] = useState(clockPhases[0]);
 
   useEffect(() => {
     const clockSettings = localStorage.getItem("clockSettings");
@@ -90,17 +118,23 @@ function App() {
 
     if (clockSettings) {
       clockSettingsObj["clockTheme"] &&
-        setTheme(clockSettingsObj["clockTheme"]);
+        setSettings((prev) => ({
+          ...prev,
+          theme: clockSettingsObj["clockTheme"],
+        }));
       clockSettingsObj["showNumbers"] &&
-        setShowClockNumbers(clockSettingsObj["showNumbers"]);
+        setSettings((prev) => ({
+          ...prev,
+          setShowClockNumbers: clockSettingsObj["showNumbers"],
+        }));
     } else {
       localStorage.setItem(
         "clockSettings",
-        JSON.stringify({ clockTheme: theme })
+        JSON.stringify({ clockTheme: settings["theme"] })
       );
       localStorage.setItem(
         "clockSettings",
-        JSON.stringify({ showNumbers: showClockNumbers })
+        JSON.stringify({ showNumbers: settings["showClockNumbers"] })
       );
     }
     const interval = setInterval(updateTime, 1000);
@@ -110,9 +144,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem(
       "clockSettings",
-      JSON.stringify({ clockTheme: theme, showNumbers: showClockNumbers })
+      JSON.stringify({
+        clockTheme: settings["theme"],
+        showNumbers: settings["showClockNumbers"],
+      })
     );
-  }, [theme, showClockNumbers]);
+  }, [settings["theme"], settings["showClockNumbers"]]);
 
   useEffect(() => {
     localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
@@ -147,14 +184,27 @@ function App() {
       alert("This clock is already in the list");
     }
   };
+  const handleThemeChange = (newTheme: ClockPhase) => {
+    setSettings((prev) => ({
+      ...prev,
+      theme: newTheme,
+    }));
+  };
+
+  const handleShowClockNumbersChange = (showNumbers: boolean) => {
+    setSettings((prev) => ({
+      ...prev,
+      showClockNumbers: showNumbers,
+    }));
+  };
 
   return (
     <div className=" min-h-full bg-blue-950 ">
       <Navbar
-        showClockNumbers={showClockNumbers}
-        setShowClockNumbers={setShowClockNumbers}
-        setTheme={setTheme}
-        theme={theme}
+        showClockNumbers={settings["showClockNumbers"]}
+        setShowClockNumbers={handleShowClockNumbersChange}
+        setTheme={handleThemeChange}
+        theme={settings["theme"]}
         clockPhases={clockPhases}
         addClock={addClock}
       ></Navbar>
@@ -176,8 +226,8 @@ function App() {
                   <Clock
                     key={timezone.id}
                     timezone={timezone}
-                    showClockNumbers={showClockNumbers}
-                    theme={theme}
+                    showClockNumbers={settings["showClockNumbers"]}
+                    theme={settings["theme"]}
                     currentDateTime={currentDateTime}
                     deleteClock={deleteClock}
                   ></Clock>
