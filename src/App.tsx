@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Clock from "./components/Clock/page";
 import { ReactSortable } from "react-sortablejs";
-import Popup from "./components/Modal/Popup";
 import Navbar from "./components/Navbar/Navbar";
 import moment from "moment-timezone";
 
@@ -82,8 +81,6 @@ function App() {
       ]
     );
   });
-  const [popup, setPopup] = useState(false);
-  const [deleteTimezone, setDeleteTimezone] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [theme, setTheme] = useState(clockPhases[0]);
 
@@ -121,12 +118,7 @@ function App() {
     localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
   }, [timeZoneList]);
 
-  const deleteClock = (timezoneName: string) => {
-    setDeleteTimezone(timezoneName);
-    setPopup(true);
-  };
-
-  const confirmDeleteClock = () => {
+  const deleteClock = (deleteTimezone: string) => {
     let filteredTimeZoneList = timeZoneList.filter(
       (timezone) => timezone.label !== deleteTimezone || timezone.label === ""
     );
@@ -167,13 +159,6 @@ function App() {
         addClock={addClock}
       ></Navbar>
       <div className="min-h-screen max-w-full  p-4">
-        {popup && (
-          <Popup
-            deleteTimezone={deleteTimezone}
-            setPopup={setPopup}
-            confirmDeleteClock={confirmDeleteClock}
-          ></Popup>
-        )}
         <ReactSortable
           list={timeZoneList}
           setList={setTimezoneList}
@@ -186,10 +171,7 @@ function App() {
             xl:grid-cols-5 gap-6 "
           >
             {timeZoneList.map((timezone) => (
-              <div
-                key={timezone.id}
-                className="sm:scale-75 md:scale-75 lg:scale-75"
-              >
+              <div key={timezone.id}>
                 <div>
                   <Clock
                     key={timezone.id}
