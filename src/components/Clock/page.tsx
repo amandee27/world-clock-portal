@@ -5,7 +5,7 @@ const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 function Clock({
   timezone,
-  isChecked,
+  showClockNumbers,
   theme,
   currentDateTime,
   deleteClock,
@@ -46,8 +46,8 @@ function Clock({
     });
   }, [currentTime]);
   useEffect(() => {
-    setShowNumbers(isChecked);
-  }, [isChecked]);
+    setShowNumbers(showClockNumbers);
+  }, [showClockNumbers]);
 
   useEffect(() => {
     if (timezone.value) {

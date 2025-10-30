@@ -79,7 +79,7 @@ export default function Navbar(props: any) {
   };
 
   const handleCheckboxChange = (event: any) => {
-    props.setIsChecked(event.target.checked);
+    props.setShowClockNumbers(event.target.checked);
   };
 
   const fetchLocations = (
@@ -173,7 +173,7 @@ export default function Navbar(props: any) {
                   id="default-checkbox"
                   type="checkbox"
                   onChange={handleCheckboxChange}
-                  checked={props.isChecked}
+                  checked={props.showClockNumbers}
                   className="text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label

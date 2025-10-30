@@ -64,7 +64,7 @@ interface CountryTimeStamp {
 }
 
 function App() {
-  const [isChecked, setIsChecked] = useState(false);
+  const [showClockNumbers, setShowClockNumbers] = useState(false);
   const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>(() => {
     const list = localStorage.getItem("timeZoneList");
     const localtimezone = moment.tz.guess();
@@ -92,7 +92,7 @@ function App() {
       clockSettingsObj["clockTheme"] &&
         setTheme(clockSettingsObj["clockTheme"]);
       clockSettingsObj["showNumbers"] &&
-        setIsChecked(clockSettingsObj["showNumbers"]);
+        setShowClockNumbers(clockSettingsObj["showNumbers"]);
     } else {
       localStorage.setItem(
         "clockSettings",
@@ -100,7 +100,7 @@ function App() {
       );
       localStorage.setItem(
         "clockSettings",
-        JSON.stringify({ showNumbers: isChecked })
+        JSON.stringify({ showNumbers: showClockNumbers })
       );
     }
     const interval = setInterval(updateTime, 1000);
@@ -110,9 +110,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem(
       "clockSettings",
-      JSON.stringify({ clockTheme: theme, showNumbers: isChecked })
+      JSON.stringify({ clockTheme: theme, showNumbers: showClockNumbers })
     );
-  }, [theme, isChecked]);
+  }, [theme, showClockNumbers]);
 
   useEffect(() => {
     localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
@@ -151,8 +151,8 @@ function App() {
   return (
     <div className=" min-h-full bg-blue-950 ">
       <Navbar
-        isChecked={isChecked}
-        setIsChecked={setIsChecked}
+        showClockNumbers={showClockNumbers}
+        setShowClockNumbers={setShowClockNumbers}
         setTheme={setTheme}
         theme={theme}
         clockPhases={clockPhases}
@@ -176,7 +176,7 @@ function App() {
                   <Clock
                     key={timezone.id}
                     timezone={timezone}
-                    isChecked={isChecked}
+                    showClockNumbers={showClockNumbers}
                     theme={theme}
                     currentDateTime={currentDateTime}
                     deleteClock={deleteClock}
