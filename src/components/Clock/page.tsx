@@ -23,7 +23,7 @@ function Clock({
   useEffect(() => {
     setCurrentTime(
       new Date(
-        moment.tz(moment(), timezone.value).format("MM/DD/YYYY HH:mm:ss")
+        moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
       )
     );
   }, [currentDateTime]);
@@ -42,19 +42,18 @@ function Clock({
         }deg)`,
       },
     });
-  }, [currentTime]);
-
-  useEffect(() => {
-    if (timezone.value) {
-      if (moment(currentTime.getDate()).isSame(new Date().getDate())) {
-        setDay("Today");
-      } else if (moment(currentTime.getDate()).isAfter(new Date().getDate())) {
-        setDay("Tommorrow");
-      } else if (moment(currentTime.getDate()).isBefore(new Date().getDate())) {
-        setDay("YesterDay");
-      }
+    const localDay = moment(currentDateTime).format("YYYY-MM-DD");
+    const zoneDay = moment
+      .tz(currentDateTime, timezone.value)
+      .format("YYYY-MM-DD");
+    if (zoneDay > localDay) {
+      setDay("Tomorrow");
+    } else if (zoneDay < localDay) {
+      setDay("Yesterday");
+    } else {
+      setDay("Today");
     }
-  }, []);
+  }, [currentTime]);
 
   const confirmDeleteClock = () => {
     deleteClock(deleteTimezone);
