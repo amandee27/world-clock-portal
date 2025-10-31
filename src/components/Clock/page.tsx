@@ -11,8 +11,6 @@ function Clock({
   deleteClock,
 }: any) {
   const [currentTime, setCurrentTime] = useState(currentDateTime);
-  const [clockTheme, setClockTheme] = useState(theme);
-  const [showNumbers, setShowNumbers] = useState(false);
   const [timing, setTiming] = useState({
     updateSeconds: {},
     updateMinutes: {},
@@ -45,9 +43,6 @@ function Clock({
       },
     });
   }, [currentTime]);
-  useEffect(() => {
-    setShowNumbers(showClockNumbers);
-  }, [showClockNumbers]);
 
   useEffect(() => {
     if (timezone.value) {
@@ -60,9 +55,6 @@ function Clock({
       }
     }
   }, []);
-  useEffect(() => {
-    setClockTheme(theme);
-  }, [theme]);
 
   const confirmDeleteClock = () => {
     deleteClock(deleteTimezone);
@@ -128,17 +120,17 @@ function Clock({
             </div>
             <div className="flex-1 flex items-center justify-center">
               <div
-                className={`${clockTheme.value.clockFace} w-56 h-56 shrink-0 grow-0 relative flex items-center justify-center rounded-full`}
+                className={`${theme.value.clockFace} w-56 h-56 shrink-0 grow-0 relative flex items-center justify-center rounded-full`}
               >
                 <section className="box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); absolute z-50 flex h-4 w-4 justify-center">
                   {clockNumbers.map((num) => (
                     <span key={num} className="inline-block">
                       <section
                         key={num}
-                        className={`${clockTheme.value.marks} h-27 w-1/10   absolute bottom-1.5 z-30 origin-bottom`}
+                        className={`${theme.value.marks} h-27 w-1/10   absolute bottom-1.5 z-30 origin-bottom`}
                         style={{ transform: `rotate(calc(${num}*6*5deg))` }}
                       >
-                        {showNumbers && (
+                        {showClockNumbers && (
                           <span
                             className="inline-block absolute justify-left"
                             style={{
@@ -154,21 +146,21 @@ function Clock({
 
                   {/* Clock center */}
                   <span
-                    className={`${clockTheme.value.hand.center} h-2.5 w-2.5 bottom-[1px] absolute z-50 flex rounded-full`}
+                    className={`${theme.value.hand.center} h-2.5 w-2.5 bottom-[1px] absolute z-50 flex rounded-full`}
                   ></span>
                   {/* Second hand */}
                   <span
-                    className={`${clockTheme.value.hand.second} h-23 w-1/10 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md`}
+                    className={`${theme.value.hand.second} h-23 w-1/10 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md`}
                     style={timing.updateSeconds}
                   ></span>
                   {/* Minute hand */}
                   <span
-                    className={`${clockTheme.value.hand.minute} h-22 w-1/6 absolute bottom-1.5 z-20 origin-bottom rounded-md`}
+                    className={`${theme.value.hand.minute} h-22 w-1/6 absolute bottom-1.5 z-20 origin-bottom rounded-md`}
                     style={timing.updateMinutes}
                   ></span>
                   {/* Hour hand */}
                   <span
-                    className={`${clockTheme.value.hand.hour} h-15 w-1/5 absolute bottom-1.5 z-10 origin-bottom divide-zinc-100 rounded-md`}
+                    className={`${theme.value.hand.hour} h-15 w-1/5 absolute bottom-1.5 z-10 origin-bottom divide-zinc-100 rounded-md`}
                     style={timing.updateHours}
                   ></span>
                 </section>
