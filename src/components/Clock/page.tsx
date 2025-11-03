@@ -30,9 +30,6 @@ function Clock({
         moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
       )
     );
-  }, [currentDateTime]);
-
-  useEffect(() => {
     setTiming({
       updateSeconds: {
         transform: `rotate(${currentTime.getSeconds() * 6}deg)`,
@@ -57,7 +54,7 @@ function Clock({
     } else {
       setDay("Today");
     }
-  }, [currentTime]);
+  }, [currentDateTime]);
 
   const confirmDeleteClock = () => {
     deleteClock(deleteTimezone);
