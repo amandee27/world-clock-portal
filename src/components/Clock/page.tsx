@@ -25,11 +25,22 @@ function Clock({
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
+    convertTimeZoneTime();
+    setClockHandTime();
+    setTimeZoneDay();
+  }, [currentDateTime]);
+
+  /**Convert each timezone’s time relative to the local time. */
+  const convertTimeZoneTime = () => {
     setCurrentTime(
       new Date(
         moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
       )
     );
+  };
+
+  /**Calculate and set clock hand rotations based on current time*/
+  const setClockHandTime = () => {
     setTiming({
       updateSeconds: {
         transform: `rotate(${currentTime.getSeconds() * 6}deg)`,
@@ -43,6 +54,10 @@ function Clock({
         }deg)`,
       },
     });
+  };
+
+  /**Set the day of each timezone relative to the local day. */
+  const setTimeZoneDay = () => {
     const localDay = moment(currentDateTime).format("YYYY-MM-DD");
     const zoneDay = moment
       .tz(currentDateTime, timezone.value)
@@ -54,8 +69,9 @@ function Clock({
     } else {
       setDay("Today");
     }
-  }, [currentDateTime]);
+  };
 
+  /**Confirm clock deletion and trigger deleteClock method in parent component*/
   const confirmDeleteClock = () => {
     deleteClock(deleteTimezone);
     setPopup(false);
