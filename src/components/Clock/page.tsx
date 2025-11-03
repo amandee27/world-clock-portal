@@ -10,7 +10,11 @@ function Clock({
   currentDateTime,
   deleteClock,
 }: any) {
-  const [currentTime, setCurrentTime] = useState(currentDateTime);
+  const [currentTime, setCurrentTime] = useState(
+    new Date(
+      moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
+    )
+  );
   const [timing, setTiming] = useState({
     updateSeconds: {},
     updateMinutes: {},
