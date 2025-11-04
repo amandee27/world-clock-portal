@@ -89,13 +89,13 @@ function Clock({
           ></Popup>
         )}
       </div>
-      <div className="sm:scale-75 md:scale-75 lg:scale-75">
-        <div className="rounded-xl  hover:shadow-lg hover:bg-gray-500/20 transition-all ">
+      <div className="group sm:scale-75 md:scale-75 lg:scale-75">
+        <div className="rounded-xl  group-hover:shadow-lg group-hover:bg-gray-500/20 transition-all ">
           <div className="relative p-4 flex flex-col items-center justify-between text-sm">
-            <div className="absolute top-2 right-2 text-white hover:text-red-400">
+            <div className="absolute top-2 right-2 text-white group-hover:text-red-400">
               {timezone.id !== "local" && (
                 <button
-                  className="text-white	"
+                  className="text-white hidden group-hover:block"
                   onClick={() => {
                     setDeleteTimezone(timezone.label);
                     setPopup(true);
