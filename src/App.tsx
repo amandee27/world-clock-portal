@@ -209,32 +209,48 @@ function App() {
         addClock={addClock}
       ></Navbar>
       <div className="min-h-screen max-w-full  p-4">
-        <ReactSortable
+        <ReactSortable<CountryTimeStamp>
           list={timeZoneList}
           setList={setTimezoneList}
-          className="grid-container"
+          animation={1000}
+          filter=".no-drag"
+          preventOnFilter={false}
+          onMove={(evt) => {
+            const dragged = evt.dragged?.dataset?.id;
+            const related = evt.related?.dataset?.id;
+            if (dragged === "local" || related === "local") return false; // Block dragging local clock
+            return true;
+          }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4"
         >
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 
-            md:grid-cols-3 
-            lg:grid-cols-4 
-            xl:grid-cols-5 gap-6 "
-          >
-            {timeZoneList.map((timezone) => (
-              <div key={timezone.id}>
-                <div>
-                  <Clock
-                    key={timezone.id}
-                    timezone={timezone}
-                    showClockNumbers={settings["showClockNumbers"]}
-                    theme={settings["theme"]}
-                    currentDateTime={currentDateTime}
-                    deleteClock={deleteClock}
-                  ></Clock>
-                </div>
+          {timeZoneList.map((timezone) => (
+            <div
+              key={timezone.id}
+              className={
+                timezone.id === "local"
+                  ? "no-drag cursor-not-allowed opacity-60"
+                  : "cursor-grab"
+              }
+              data-id={timezone.id}
+            >
+              <div
+                key={timezone.id}
+                className={
+                  timezone.id === "local" ? "non-draggable" : "cursor-grab"
+                }
+                data-id={timezone.id}
+              >
+                <Clock
+                  key={timezone.id}
+                  timezone={timezone}
+                  showClockNumbers={settings["showClockNumbers"]}
+                  theme={settings["theme"]}
+                  currentDateTime={currentDateTime}
+                  deleteClock={deleteClock}
+                ></Clock>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </ReactSortable>
       </div>
     </div>
