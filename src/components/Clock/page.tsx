@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "moment";
 import Popup from "../Modal/Popup";
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -10,38 +10,30 @@ function Clock({
   currentDateTime,
   deleteClock,
 }: any) {
-  const [currentTime, setCurrentTime] = useState(
-    new Date(
-      moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
-    )
-  );
-  const [timing, setTiming] = useState({
-    updateSeconds: {},
-    updateMinutes: {},
-    updateHours: {},
-  });
-  const [day, setDay] = useState("");
-  const [deleteTimezone, setDeleteTimezone] = useState("");
+  let timing = setTime(currentDateTime, timezone.value);
+  let day = getRelativeDay(currentDateTime, timezone.value);
   const [popup, setPopup] = useState(false);
 
-  useEffect(() => {
-    convertTimeZoneTime();
-    setClockHandTime();
-    setTimeZoneDay();
-  }, [currentDateTime]);
+  /**Set the day of each timezone relative to the local day. */
+  function getRelativeDay(currentDateTime: Date, timezone: string) {
+    const localDay = moment(currentDateTime).format("YYYY-MM-DD");
+    const zoneDay = moment.tz(currentDateTime, timezone).format("YYYY-MM-DD");
+    let relativeDay = "";
+    if (zoneDay > localDay) {
+      relativeDay = "Tomorrow";
+    } else if (zoneDay < localDay) {
+      relativeDay = "Yesterday";
+    } else {
+      relativeDay = "Today";
+    }
+    return relativeDay;
+  }
 
-  /**Convert each timezone’s time relative to the local time. */
-  const convertTimeZoneTime = () => {
-    setCurrentTime(
-      new Date(
-        moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
-      )
+  function setTime(currentDateTime: Date, timezone: string) {
+    const currentTime = new Date(
+      moment.tz(currentDateTime, timezone).format("MM/DD/YYYY HH:mm:ss")
     );
-  };
-
-  /**Calculate and set clock hand rotations based on current time*/
-  const setClockHandTime = () => {
-    setTiming({
+    let timing = {
       updateSeconds: {
         transform: `rotate(${currentTime.getSeconds() * 6}deg)`,
       },
@@ -53,29 +45,14 @@ function Clock({
           currentTime.getHours() * 30 + currentTime.getMinutes() / 2
         }deg)`,
       },
-    });
-  };
-
-  /**Set the day of each timezone relative to the local day. */
-  const setTimeZoneDay = () => {
-    const localDay = moment(currentDateTime).format("YYYY-MM-DD");
-    const zoneDay = moment
-      .tz(currentDateTime, timezone.value)
-      .format("YYYY-MM-DD");
-    if (zoneDay > localDay) {
-      setDay("Tomorrow");
-    } else if (zoneDay < localDay) {
-      setDay("Yesterday");
-    } else {
-      setDay("Today");
-    }
-  };
+    };
+    return timing;
+  }
 
   /**Confirm clock deletion and trigger deleteClock method in parent component*/
   const confirmDeleteClock = () => {
-    deleteClock(deleteTimezone);
+    deleteClock(timezone.label);
     setPopup(false);
-    setDeleteTimezone("");
   };
 
   return (
@@ -83,7 +60,7 @@ function Clock({
       <div>
         {popup && (
           <Popup
-            deleteTimezone={deleteTimezone}
+            deleteTimezone={timezone.label}
             setPopup={setPopup}
             confirmDeleteClock={confirmDeleteClock}
           ></Popup>
@@ -97,7 +74,6 @@ function Clock({
                 <button
                   className="text-white hidden group-hover:block"
                   onClick={() => {
-                    setDeleteTimezone(timezone.label);
                     setPopup(true);
                   }}
                 >
