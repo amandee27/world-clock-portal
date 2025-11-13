@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Clock from "./components/Clock/page";
-import { ReactSortable } from "react-sortablejs";
 import Navbar from "./components/Navbar/Navbar";
 import moment from "moment-timezone";
+import Swap from "./components/Swap/Swap";
 
 let clockPhases = [
   {
@@ -198,25 +198,8 @@ function App() {
     }));
   };
 
-  const handleDragStart = (id: string) => (e: any) => {
-    e.dataTransfer.setData("dragContent", JSON.stringify({ id }));
-  };
-
-  const handleDrop = (id: string) => (e: any) => {
-    const fromBox = JSON.parse(e.dataTransfer.getData("dragContent"));
-    swapClocks(fromBox.id, id);
-  };
-
-  const swapClocks = (fromId: string, toId: string) => {
-    const newClocks = [...timeZoneList];
-    const fromIndex = newClocks.findIndex((b) => b.id === fromId);
-    const toIndex = newClocks.findIndex((b) => b.id === toId);
-    if (fromId === "local" || toId === "local") return;
-    [newClocks[fromIndex], newClocks[toIndex]] = [
-      newClocks[toIndex],
-      newClocks[fromIndex],
-    ];
-    setTimezoneList(newClocks);
+  const handleSwapClocks = (timezonelist: CountryTimeStamp[]) => {
+    setTimezoneList(timezonelist);
   };
 
   return (
@@ -232,17 +215,10 @@ function App() {
       <div className="min-h-screen max-w-full  p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {timeZoneList.map((timezone) => (
-            <div
-              key={timezone.id}
-              draggable={timezone.id !== "local"}
-              onDragStart={handleDragStart(timezone.id)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleDrop(timezone.id)}
-              className={
-                timezone.id === "local"
-                  ? "cursor-not-allowed hover:opacity-80 transition"
-                  : "cursor-grab active:cursor-grabbing"
-              }
+            <Swap
+              timezoneId={timezone.id}
+              timeZoneList={timeZoneList}
+              handleSwapClocks={handleSwapClocks}
             >
               <Clock
                 key={timezone.id}
@@ -252,7 +228,7 @@ function App() {
                 currentDateTime={currentDateTime}
                 deleteClock={deleteClock}
               ></Clock>
-            </div>
+            </Swap>
           ))}
         </div>
       </div>
