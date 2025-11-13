@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Clock from "./components/Clock/page";
+import Clock from "./components/Clock/Clock";
 import Navbar from "./components/Navbar/Navbar";
 import moment from "moment-timezone";
 import Swap from "./components/Swap/Swap";
