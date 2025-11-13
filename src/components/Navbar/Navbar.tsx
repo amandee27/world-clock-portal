@@ -217,9 +217,44 @@ export default function Navbar(props: any) {
                   <li className="w-44" key={theme.key}>
                     <a
                       onClick={() => selectTheme(theme)}
-                      className="w-38 block px-4 py-2 bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white"
+                      className={`w-38 flex items-center gap-8  px-4 py-2  hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white ${
+                        props.theme.key === theme.key
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-600"
+                      }`}
                     >
-                      {theme.key}
+                      <span>{theme.key}</span>
+                      {props.theme.key === theme.key && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          x="0px"
+                          y="0px"
+                          width="20"
+                          height="20"
+                          viewBox="0,0,256,256"
+                        >
+                          <g
+                            fill="#ffffff"
+                            fill-rule="nonzero"
+                            stroke="none"
+                            stroke-width="1"
+                            stroke-linecap="butt"
+                            stroke-linejoin="miter"
+                            stroke-miterlimit="10"
+                            stroke-dasharray=""
+                            stroke-dashoffset="0"
+                            font-family="none"
+                            font-weight="none"
+                            font-size="none"
+                            text-anchor="none"
+                            style={{ mixBlendMode: "normal" }}
+                          >
+                            <g transform="scale(10.66667,10.66667)">
+                              <path d="M20.29297,5.29297l-11.29297,11.29297l-4.29297,-4.29297l-1.41406,1.41406l5.70703,5.70703l12.70703,-12.70703z"></path>
+                            </g>
+                          </g>
+                        </svg>
+                      )}
                     </a>
                   </li>
                 ))}
