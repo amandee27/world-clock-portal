@@ -86,13 +86,13 @@ interface CountryTimeStamp {
 
 interface ClockSettings {
   theme: ClockPhase;
-  showClockNumbers: boolean;
+  showNumbers: boolean;
 }
 
 function App() {
   const [settings, setSettings] = useState<ClockSettings>({
     theme: clockPhases[0],
-    showClockNumbers: false,
+    showNumbers: false,
   });
   const [timeZoneList, setTimezoneList] = useState<CountryTimeStamp[]>(() => {
     const list = localStorage.getItem("timeZoneList");
@@ -116,25 +116,18 @@ function App() {
     const clockSettings = localStorage.getItem("clockSettings");
     const clockSettingsObj = clockSettings && JSON.parse(clockSettings);
 
-    if (clockSettings) {
-      clockSettingsObj["clockTheme"] &&
-        setSettings((prev) => ({
-          ...prev,
-          theme: clockSettingsObj["clockTheme"],
-        }));
-      clockSettingsObj["showNumbers"] &&
-        setSettings((prev) => ({
-          ...prev,
-          setShowClockNumbers: clockSettingsObj["showNumbers"],
-        }));
+    if (clockSettingsObj) {
+      setSettings({
+        theme: clockSettingsObj["clockTheme"],
+        showNumbers: clockSettingsObj["showNumbers"],
+      });
     } else {
       localStorage.setItem(
         "clockSettings",
-        JSON.stringify({ clockTheme: settings["theme"] })
-      );
-      localStorage.setItem(
-        "clockSettings",
-        JSON.stringify({ showNumbers: settings["showClockNumbers"] })
+        JSON.stringify({
+          clockTheme: settings["theme"],
+          showNumbers: settings["showNumbers"],
+        })
       );
     }
     const interval = setInterval(updateTime, 1000);
@@ -146,10 +139,10 @@ function App() {
       "clockSettings",
       JSON.stringify({
         clockTheme: settings["theme"],
-        showNumbers: settings["showClockNumbers"],
+        showNumbers: settings["showNumbers"],
       })
     );
-  }, [settings["theme"], settings["showClockNumbers"]]);
+  }, [settings["theme"], settings["showNumbers"]]);
 
   useEffect(() => {
     localStorage.setItem("timeZoneList", JSON.stringify(timeZoneList));
@@ -194,7 +187,7 @@ function App() {
   const handleShowClockNumbersChange = (showNumbers: boolean) => {
     setSettings((prev) => ({
       ...prev,
-      showClockNumbers: showNumbers,
+      showNumbers: showNumbers,
     }));
   };
 
@@ -205,7 +198,7 @@ function App() {
   return (
     <div className=" min-h-full bg-blue-950 ">
       <Navbar
-        showClockNumbers={settings["showClockNumbers"]}
+        showClockNumbers={settings["showNumbers"]}
         setShowClockNumbers={handleShowClockNumbersChange}
         setTheme={handleThemeChange}
         theme={settings["theme"]}
@@ -223,7 +216,7 @@ function App() {
               <Clock
                 key={timezone.id}
                 timezone={timezone}
-                showClockNumbers={settings["showClockNumbers"]}
+                showClockNumbers={settings["showNumbers"]}
                 theme={settings["theme"]}
                 currentDateTime={currentDateTime}
                 deleteClock={deleteClock}
