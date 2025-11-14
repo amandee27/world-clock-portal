@@ -61,6 +61,7 @@ function App() {
     );
   });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [notification, setNotification] = useState<null | string>(null);
 
   useEffect(() => {
     const clockSettings = localStorage.getItem("clockSettings");
@@ -103,6 +104,10 @@ function App() {
       (timezone) => timezone.label !== deleteTimezone || timezone.label === ""
     );
     setTimezoneList(filteredTimeZoneList);
+    setNotification("Clock is successfully deleted");
+    setTimeout(() => {
+      setNotification(null);
+    }, 1500);
   };
 
   const updateTime = () => {
@@ -146,7 +151,7 @@ function App() {
   };
 
   return (
-    <div className=" min-h-full bg-blue-950 ">
+    <div className="flex flex-col bg-blue-950 ">
       <Navbar
         showClockNumbers={settings["showNumbers"]}
         setShowClockNumbers={handleShowClockNumbersChange}
@@ -155,7 +160,16 @@ function App() {
         clockPhases={clockPhases}
         addClock={addClock}
       ></Navbar>
-      <div className="min-h-screen max-w-full  p-4">
+
+      {notification && (
+        <div className="flex justify-end px-4">
+          <div className="bg-white text-red-600 px-4 text-sm py-2 animate-fadeIn">
+            {notification}
+          </div>
+        </div>
+      )}
+
+      <div className="flex-1 p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {timeZoneList.map((timezone) => (
             <Swap
