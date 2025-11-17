@@ -107,7 +107,7 @@ function App() {
     setNotification("Clock is successfully deleted");
     setTimeout(() => {
       setNotification(null);
-    }, 1500);
+    }, 5000);
   };
 
   const updateTime = () => {
@@ -146,12 +146,20 @@ function App() {
     }));
   };
 
-  const handleSwapClocks = (timezonelist: CountryTimeStamp[]) => {
-    setTimezoneList(timezonelist);
+  const swapClocks = (fromId: string, toId: string) => {
+    const newClocks = [...timeZoneList];
+    const fromIndex = newClocks.findIndex((b) => b.id === fromId);
+    const toIndex = newClocks.findIndex((b) => b.id === toId);
+    if (fromId === "local" || toId === "local") return;
+    [newClocks[fromIndex], newClocks[toIndex]] = [
+      newClocks[toIndex],
+      newClocks[fromIndex],
+    ];
+    setTimezoneList(newClocks);
   };
 
   return (
-    <div className="flex flex-col bg-blue-950 ">
+    <div className="flex flex-col min-h-full bg-blue-950 ">
       <Navbar
         showClockNumbers={settings["showNumbers"]}
         setShowClockNumbers={handleShowClockNumbersChange}
@@ -163,7 +171,7 @@ function App() {
 
       {notification && (
         <div className="flex justify-end px-4">
-          <div className="bg-white text-red-600 px-4 text-sm py-2 animate-fadeIn">
+          <div className="bg-white/25 text-blue-200 px-4 text-sm py-2 animate-fadeIn rounded">
             {notification}
           </div>
         </div>
@@ -173,9 +181,9 @@ function App() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {timeZoneList.map((timezone) => (
             <Swap
-              timezoneId={timezone.id}
-              timeZoneList={timeZoneList}
-              handleSwapClocks={handleSwapClocks}
+              itemId={timezone.id}
+              handleSwap={swapClocks}
+              isFixed={timezone.id !== "local"}
             >
               <Clock
                 key={timezone.id}
