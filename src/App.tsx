@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar/Navbar";
 import moment from "moment-timezone";
 import Swap from "./components/Swap/Swap";
 import { clockPhases } from "./data/clockPhases";
+import Loading from "./components/Modal/Loading";
+import Notification from "./components/Modal/Notification";
 
 interface ClockHand {
   center: string;
@@ -62,6 +64,7 @@ function App() {
   });
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [notification, setNotification] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const clockSettings = localStorage.getItem("clockSettings");
@@ -100,11 +103,16 @@ function App() {
   }, [timeZoneList]);
 
   const deleteClock = (deleteTimezone: string) => {
-    let filteredTimeZoneList = timeZoneList.filter(
-      (timezone) => timezone.label !== deleteTimezone || timezone.label === ""
-    );
-    setTimezoneList(filteredTimeZoneList);
-    setNotification("Clock is successfully deleted");
+    setLoading(true);
+    setTimeout(() => {
+      let filteredTimeZoneList = timeZoneList.filter(
+        (timezone) => timezone.label !== deleteTimezone || timezone.label === ""
+      );
+      setTimezoneList(filteredTimeZoneList);
+      setLoading(false);
+    }, 500);
+
+    setNotification(`Clock ${deleteTimezone} is successfully deleted`);
     setTimeout(() => {
       setNotification(null);
     }, 5000);
@@ -115,22 +123,31 @@ function App() {
   };
 
   const addClock = (timezone: CountryTimeStamp) => {
-    const exists =
-      timeZoneList &&
-      timeZoneList.some((item) => item.label === timezone.label);
-    if (!exists) {
-      setTimezoneList([
-        ...timeZoneList,
-        {
-          id: timezone.label ?? "",
-          value: timezone.value ?? "",
-          label: timezone.label ?? "",
-          offset: timezone.offset ?? "",
-        },
-      ]);
-    } else {
-      alert("This clock is already in the list");
-    }
+    setLoading(true);
+    setTimeout(() => {
+      const exists =
+        timeZoneList &&
+        timeZoneList.some((item) => item.label === timezone.label);
+      if (!exists) {
+        setTimezoneList([
+          ...timeZoneList,
+          {
+            id: timezone.label ?? "",
+            value: timezone.value ?? "",
+            label: timezone.label ?? "",
+            offset: timezone.offset ?? "",
+          },
+        ]);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        alert("This clock is already in the list");
+      }
+    }, 500);
+    setNotification(`Clock ${timezone.label} is successfully added`);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
   };
   const handleThemeChange = (newTheme: ClockPhase) => {
     setSettings((prev) => ({
@@ -160,6 +177,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-full bg-blue-950 ">
+      {loading && <Loading />}
       <Navbar
         showClockNumbers={settings["showNumbers"]}
         setShowClockNumbers={handleShowClockNumbersChange}
@@ -170,11 +188,7 @@ function App() {
       ></Navbar>
 
       {notification && (
-        <div className="flex justify-end px-4">
-          <div className="bg-white/25 text-blue-200 px-4 text-sm py-2 animate-fadeIn rounded">
-            {notification}
-          </div>
-        </div>
+        <Notification notification={notification}></Notification>
       )}
 
       <div className="flex-1 p-4">
