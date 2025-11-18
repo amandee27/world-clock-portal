@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import moment from "moment";
 import Popup from "../Modal/Popup";
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -50,10 +50,14 @@ function Clock({
   }
 
   /**Confirm clock deletion and trigger deleteClock method in parent component*/
-  const confirmDeleteClock = () => {
+  const confirmDeleteClock = useCallback(() => {
     deleteClock(timezone.label);
     setPopup(false);
-  };
+  }, [deleteClock, timezone.label]);
+
+  const openPopup = useCallback(() => {
+    setPopup(true);
+  }, []);
 
   return (
     <div>
@@ -73,9 +77,7 @@ function Clock({
               {timezone.id !== "local" && (
                 <button
                   className="text-white hidden group-hover:block"
-                  onClick={() => {
-                    setPopup(true);
-                  }}
+                  onClick={openPopup}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,10 @@
-function Popup({ deleteTimezone, setPopup, confirmDeleteClock }: any) {
+import React from "react";
+
+const Popup = React.memo(function Popup({
+  deleteTimezone,
+  setPopup,
+  confirmDeleteClock,
+}: any) {
   return (
     <div className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 z-70">
       <div className="bg-white rounded-lg w-1/2">
@@ -44,6 +50,6 @@ function Popup({ deleteTimezone, setPopup, confirmDeleteClock }: any) {
       </div>
     </div>
   );
-}
+});
 
 export default Popup;
