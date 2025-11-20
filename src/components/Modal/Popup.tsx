@@ -29,7 +29,7 @@ const Popup = React.memo(function Popup({
           <hr />
           <div className="ml-auto">
             <button
-              className="bg-black hover:bg-gray-500 text-white  py-2 px-4 mx-2"
+              className="bg-black hover:bg-gray-500 text-white rounded-sm py-2 px-4 mx-2"
               onClick={() => {
                 confirmDeleteClock();
                 setPopup(false);
@@ -41,7 +41,7 @@ const Popup = React.memo(function Popup({
               onClick={() => {
                 setPopup(false);
               }}
-              className="bg-transparent hover:bg-gray-500 text-black hover:text-white py-2 px-4 border border-black hover:border-transparent "
+              className="bg-transparent hover:bg-gray-500 text-black hover:text-white py-2 px-4 border border-black hover:border-transparent rounded-sm"
             >
               No
             </button>

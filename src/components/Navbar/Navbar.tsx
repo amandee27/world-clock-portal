@@ -11,9 +11,21 @@ const customStyles = {
     padding: "none",
     paddingTop: "0px",
     paddingBottom: "0px",
-    borderRadius: "5px",
+    borderRadius: "4px",
     boxShadow: "none",
     boxSizing: "none",
+  }),
+  menu: (provided: any) => ({
+    ...provided,
+    borderRadius: "4px",
+    overflow: "hidden",
+    marginTop: "4px",
+  }),
+  menuList: (provided: any) => ({
+    ...provided,
+    borderRadius: "4px", // Full rounding inside
+    padding: 0,
+    overflow: "hidden", // keeps rounded corners clean
   }),
   option: (provided: any, state: any) => ({
     ...provided,
@@ -25,10 +37,7 @@ const customStyles = {
         ? "rgba(189,197,209,.3)"
         : "rgb(222, 235, 255)",
     },
-  }),
-  menu: (provided: any) => ({
-    ...provided,
-    borderRadius: "none",
+    borderRadius: "4px",
   }),
 };
 
@@ -107,7 +116,7 @@ export default function Navbar(props: any) {
   return (
     <nav className="w-full bg-transparent text-white px-4 py-3 flex items-center justify-between">
       {/* Center items */}
-      <div className="flex-1 flex justify-center items-center gap-4">
+      <div className="flex-1 flex justify-center items-stretch gap-4">
         <div className="w-120">
           <AsyncSelect
             cacheOptions
@@ -124,9 +133,9 @@ export default function Navbar(props: any) {
             styles={customStyles}
           />
         </div>
-        <div className="flex content-center ">
+        <div>
           <button
-            className="bg-white  hover:bg-gray-100 text-gray-500 text-sm  w-15 h-8 border border-gray-400 rounded shadow"
+            className="bg-white h-full hover:bg-gray-100 text-gray-500 text-sm  w-15 border border-gray-400 rounded-sm shadow"
             onClick={handleAdd}
           >
             Add
@@ -139,7 +148,7 @@ export default function Navbar(props: any) {
         <button
           id="dropdownCheckboxButton"
           onClick={toggleDropdown}
-          className="text-gray-500 bg-white hover:bg-blue-100 focus:ring-1 focus:outline-none focus:ring-blue-300 text-sm inline-flex items-center justify-between dark:bg-white dark:hover:bg-blue-100 dark:focus:ring-blue-800 w-44 px-5 py-2.5"
+          className="text-gray-500 bg-white hover:bg-blue-100 focus:ring-1 focus:outline-none focus:ring-blue-300 text-sm inline-flex items-center justify-between dark:bg-white dark:hover:bg-blue-100 dark:focus:ring-blue-800 w-44 px-5 py-2.5 rounded-sm"
           type="button"
         >
           Clock Settings{" "}
@@ -162,13 +171,13 @@ export default function Navbar(props: any) {
 
         <div
           id="mainDropdown"
-          className={`absolute z-10  w-44 bg-white  shadow-sm dark:bg-gray-700 dark:divide-gray-600 ${
+          className={`absolute z-10  w-44 bg-white  shadow-sm dark:bg-gray-700 rounded-sm mt-1 dark:divide-gray-600 ${
             isOpen ? "block" : "hidden"
           }`}
         >
-          <ul className="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200">
-            <li className="relative">
-              <div className="flex items-center dark:hover:bg-gray-600 px-4 py-2">
+          <ul className="p-3 text-sm text-gray-700 dark:text-gray-200">
+            <li className="relative w-38">
+              <div className="flex items-center justify-between px-4 py-2 rounded-sm  dark:hover:bg-gray-600">
                 <input
                   id="default-checkbox"
                   type="checkbox"
@@ -184,11 +193,11 @@ export default function Navbar(props: any) {
                 </label>
               </div>
             </li>
-            <li className="relative">
+            <li className="relative w-38">
               <button
                 onClick={toggleSubDropDown}
                 type="button"
-                className=" flex items-center justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className=" w-38 flex items-center justify-between px-4 py-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Clock Themes
                 <svg
@@ -209,15 +218,15 @@ export default function Navbar(props: any) {
               </button>
 
               <ul
-                className={`w-38 py-2 text-sm text-gray-700 dark:text-gray-200 absolute ${
+                className={`w-38 mt-1 text-sm text-gray-700 dark:text-gray-200  rounded-sm  bg-gray-600 absolute ${
                   isSubOpen ? "block" : "hidden"
                 }`}
               >
                 {props.clockPhases.map((theme: any) => (
-                  <li className="w-44" key={theme.key}>
+                  <li key={theme.key}>
                     <a
                       onClick={() => selectTheme(theme)}
-                      className={`w-38 flex items-center gap-8  px-4 py-2  hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white ${
+                      className={`w-38 rounded-sm flex items-center gap-8  px-4 py-2  hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white ${
                         props.theme.key === theme.key
                           ? "bg-blue-600 text-white"
                           : "bg-gray-600"
