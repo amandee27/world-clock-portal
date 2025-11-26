@@ -7,6 +7,7 @@ import Swap from "./components/Swap/Swap";
 import { clockPhases } from "./data/clockPhases";
 import Loading from "./components/Modal/Loading";
 import Notification from "./components/Modal/Notification";
+import ClockGrid from "./components/ClockGrid/ClockGrid";
 
 interface ClockHand {
   center: string;
@@ -192,24 +193,14 @@ function App() {
       )}
 
       <div className="flex-1 p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {timeZoneList.map((timezone) => (
-            <Swap
-              itemId={timezone.id}
-              handleSwap={swapClocks}
-              isFixed={timezone.id !== "local"}
-            >
-              <Clock
-                key={timezone.id}
-                timezone={timezone}
-                showClockNumbers={settings["showNumbers"]}
-                theme={settings["theme"]}
-                currentDateTime={currentDateTime}
-                deleteClock={deleteClock}
-              ></Clock>
-            </Swap>
-          ))}
-        </div>
+        <ClockGrid
+          timeZoneList={timeZoneList}
+          showClockNumbers={settings["showNumbers"]}
+          theme={settings["theme"]}
+          currentDateTime={currentDateTime}
+          deleteClock={deleteClock}
+          swapClocks={swapClocks}
+        />
       </div>
     </div>
   );
