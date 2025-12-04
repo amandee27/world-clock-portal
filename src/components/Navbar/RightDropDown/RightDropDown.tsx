@@ -1,12 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-
-interface RightDropDownProps {
-  showClockNumbers: boolean;
-  setShowClockNumbers: (show: boolean) => void;
-  clockPhases: any[];
-  theme: any;
-  setTheme: (theme: any) => void;
-}
+import React, { useContext, useEffect, useRef, useState } from "react";
+import SettingsContext from "../../../Contexts/SettingsContexts";
+import { clockPhases } from "../../../data/clockPhases";
 
 function useClickOutside(
   ref: any,
@@ -28,16 +22,11 @@ function useClickOutside(
   }, [onClickOutside, onClicksubOutside]);
 }
 
-const RightDropDown: React.FC<RightDropDownProps> = ({
-  showClockNumbers,
-  clockPhases,
-  setTheme,
-  setShowClockNumbers,
-  theme,
-}) => {
+const RightDropDown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setSubOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null!);
+  const settings = useContext(SettingsContext);
   useClickOutside(
     wrapperRef,
     () => {
@@ -46,12 +35,18 @@ const RightDropDown: React.FC<RightDropDownProps> = ({
     () => setSubOpen(false)
   );
   const selectTheme = (theme: any) => {
-    setTheme(theme);
+    settings.updateSettings?.({
+      ...settings.clockSettings,
+      theme: theme,
+    });
     setSubOpen(false);
   };
 
   const handleCheckboxChange = (event: any) => {
-    setShowClockNumbers(event.target.checked);
+    settings.updateSettings?.({
+      ...settings.clockSettings,
+      showNumbers: event.target.checked,
+    });
   };
 
   const toggleDropdown = () => {
@@ -99,7 +94,7 @@ const RightDropDown: React.FC<RightDropDownProps> = ({
                 id="default-checkbox"
                 type="checkbox"
                 onChange={handleCheckboxChange}
-                checked={showClockNumbers}
+                checked={settings.clockSettings.showNumbers}
                 className="text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
@@ -143,13 +138,13 @@ const RightDropDown: React.FC<RightDropDownProps> = ({
                   <a
                     onClick={() => selectTheme(themeItem)}
                     className={`w-38 rounded-sm flex items-center gap-8  px-4 py-2  hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white ${
-                      theme.key === themeItem.key
+                      settings.clockSettings.theme.key === themeItem.key
                         ? "bg-blue-600 text-white"
                         : "bg-gray-600"
                     }`}
                   >
                     <span>{themeItem.key}</span>
-                    {theme.key === themeItem.key && (
+                    {settings.clockSettings.theme.key === themeItem.key && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         x="0px"

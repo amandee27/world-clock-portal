@@ -8,13 +8,7 @@ import { ClockOuterContainer } from "./ClockOuterContainer/ClockOuterContainer";
 
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-function Clock({
-  timezone,
-  showClockNumbers,
-  theme,
-  currentDateTime,
-  deleteClock,
-}: any) {
+function Clock({ timezone, currentDateTime, deleteClock }: any) {
   const [popup, setPopup] = useState(false);
 
   /**Confirm clock deletion and trigger deleteClock method in parent component*/
@@ -46,8 +40,6 @@ function Clock({
           </div>
           <div className="flex-1 flex items-center justify-center">
             <ClockFace
-              theme={theme}
-              showClockNumbers={showClockNumbers}
               currentDateTime={currentDateTime}
               clockNumbers={clockNumbers}
               timezone={timezone}

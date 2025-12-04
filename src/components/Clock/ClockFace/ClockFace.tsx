@@ -1,21 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import moment from "moment";
+import SettingsContext from "../../../Contexts/SettingsContexts";
 
 interface ClockFaceProps {
-  theme: any;
-  showClockNumbers: boolean;
   currentDateTime: any;
   clockNumbers: number[];
   timezone: any;
 }
 
 const ClockFace: React.FC<ClockFaceProps> = ({
-  theme,
-  showClockNumbers,
   currentDateTime,
   clockNumbers,
   timezone,
 }) => {
+  const settings = useContext(SettingsContext);
+  const { theme, showNumbers } = settings.clockSettings;
   const currentTime = new Date(
     moment.tz(currentDateTime, timezone.value).format("MM/DD/YYYY HH:mm:ss")
   );
@@ -46,7 +45,7 @@ const ClockFace: React.FC<ClockFaceProps> = ({
                 className={`${theme.value.marks} h-27 w-1/10 absolute bottom-1.5 z-30 origin-bottom`}
                 style={{ transform: `rotate(calc(${num}*6*5deg))` }}
               >
-                {showClockNumbers && (
+                {showNumbers && (
                   <span
                     className="inline-block absolute justify-left"
                     style={{
