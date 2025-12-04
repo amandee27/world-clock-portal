@@ -58,7 +58,11 @@ function App() {
     setCurrentDateTime(new Date());
   };
 
-  const addClock = (timezone: CountryTimeStamp) => {
+  const addClock = (timezone: {
+    value: string;
+    label: string;
+    offset: string;
+  }) => {
     setLoading(true);
     setTimeout(() => {
       const exists =

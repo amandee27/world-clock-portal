@@ -5,15 +5,16 @@ import ClockLabel from "./ClockLabel/ClockLabel";
 import ClockFace from "./ClockFace/ClockFace";
 import ClockDeleteButton from "./ClockDeleteButton/ClockDeleteButton";
 import { ClockOuterContainer } from "./ClockOuterContainer/ClockOuterContainer";
+import { ClockProps } from "../../Interfaces/ClockProps";
 
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-function Clock({ timezone, currentDateTime, deleteClock }: any) {
+function Clock({ timezone, currentDateTime, deleteClock }: ClockProps) {
   const [popup, setPopup] = useState(false);
 
   /**Confirm clock deletion and trigger deleteClock method in parent component*/
   const confirmDeleteClock = useCallback(() => {
-    deleteClock(timezone.label);
+    timezone.label && deleteClock(timezone.label);
     setPopup(false);
   }, [deleteClock, timezone.label]);
 
@@ -23,7 +24,7 @@ function Clock({ timezone, currentDateTime, deleteClock }: any) {
 
   return (
     <div>
-      {popup && (
+      {popup && timezone.label && (
         <Popup
           deleteTimezone={timezone.label}
           setPopup={setPopup}
@@ -48,7 +49,7 @@ function Clock({ timezone, currentDateTime, deleteClock }: any) {
         </div>
         <div className="text-center">
           <ClockLabel
-            label={timezone.value ? timezone.label : "Local"}
+            label={timezone.label && timezone.value ? timezone.label : "Local"}
             currentDateTime={currentDateTime}
             offset={timezone.offset}
             timezone={timezone}

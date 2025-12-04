@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import SettingsContext from "../../../Contexts/SettingsContexts";
-import { clockPhases } from "../../../data/clockPhases";
+import { clockPhases, ClockTheme } from "../../../data/clockPhases";
 
 function useClickOutside(
-  ref: any,
-  onClickOutside: any,
-  onClicksubOutside: any
+  ref: React.RefObject<HTMLDivElement>,
+  onClickOutside: () => void,
+  onClicksubOutside: () => void
 ) {
   useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (ref.current && !ref.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
         onClickOutside();
         onClicksubOutside();
       }
@@ -133,7 +133,7 @@ const RightDropDown: React.FC = () => {
                 isSubOpen ? "block" : "hidden"
               }`}
             >
-              {clockPhases.map((themeItem: any) => (
+              {clockPhases.map((themeItem: ClockTheme) => (
                 <li key={themeItem.key}>
                   <a
                     onClick={() => selectTheme(themeItem)}

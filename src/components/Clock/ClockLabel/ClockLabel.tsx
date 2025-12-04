@@ -1,12 +1,6 @@
 import React from "react";
 import moment from "moment";
-
-interface ClockLabelProps {
-  label: string;
-  currentDateTime: any;
-  offset: string | undefined;
-  timezone: any;
-}
+import { ClockLabelProps } from "../../../Interfaces/ClockLabelProps";
 
 const ClockLabel: React.FC<ClockLabelProps> = ({
   label,
@@ -15,13 +9,13 @@ const ClockLabel: React.FC<ClockLabelProps> = ({
   timezone,
 }) => {
   const localDay = moment(currentDateTime).format("YYYY-MM-DD");
-  const zoneDay = moment
-    .tz(currentDateTime, timezone.value)
-    .format("YYYY-MM-DD");
+  const zoneDay =
+    timezone.value &&
+    moment.tz(currentDateTime, timezone.value).format("YYYY-MM-DD");
   let relativeDay = "";
-  if (zoneDay > localDay) {
+  if (zoneDay && zoneDay > localDay) {
     relativeDay = "Tomorrow";
-  } else if (zoneDay < localDay) {
+  } else if (zoneDay && zoneDay < localDay) {
     relativeDay = "Yesterday";
   } else {
     relativeDay = "Today";

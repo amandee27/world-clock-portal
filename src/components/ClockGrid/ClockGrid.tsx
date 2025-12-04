@@ -1,21 +1,7 @@
 import React from "react";
 import Clock from "../Clock/Clock";
 import Swap from "../Swap/Swap";
-import { ClockPhase } from "../../Interfaces/ClockPhase";
-
-interface CountryTimeStamp {
-  id: string;
-  value: string | undefined;
-  label: string | undefined;
-  offset: string | undefined;
-}
-
-interface ClockGridProps {
-  timeZoneList: CountryTimeStamp[];
-  currentDateTime: Date;
-  deleteClock: (deleteTimezone: string) => void;
-  swapClocks: (fromId: string, toId: string) => void;
-}
+import { ClockGridProps } from "../../Interfaces/ClockGridProps";
 
 const ClockGrid: React.FC<ClockGridProps> = ({
   timeZoneList,

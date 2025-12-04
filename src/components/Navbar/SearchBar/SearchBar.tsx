@@ -42,14 +42,20 @@ const customStyles = {
 };
 
 interface SearchBarProps {
-  addClock: (zone: any) => void;
+  addClock: (zone: { value: string; label: string; offset: string }) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
-  const [selectedZone, setSelectedZone] = useState<any>(null);
+  const [selectedZone, setSelectedZone] = useState<{
+    value: string;
+    label: string;
+    offset: string;
+  } | null>(null);
   const fetchLocations = (
     inputValue: string,
-    callback: (options: { value: string; label: string }[]) => void
+    callback: (
+      options: { value: string; label: string; offset: string }[]
+    ) => void
   ) => {
     fetch(`http://localhost:3000/cities?query=${inputValue}`)
       .then((res) => res.json())
