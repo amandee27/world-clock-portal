@@ -87,7 +87,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
               setSelectedZone(option);
             }
           }}
-          defaultOptions={false}
+          noOptionsMessage={() => null}
           placeholder="Search for a city or timezone..."
           className="z-60"
           styles={customStyles}
