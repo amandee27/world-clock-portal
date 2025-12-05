@@ -101,7 +101,7 @@ const RightDropDown: React.FC = () => {
                 htmlFor="default-checkbox"
                 className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
-                show numbers
+                Show Numbers
               </label>
             </div>
           </li>
