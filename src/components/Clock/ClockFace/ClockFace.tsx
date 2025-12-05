@@ -1,12 +1,7 @@
 import React, { useContext } from "react";
 import moment from "moment";
 import SettingsContext from "../../../Contexts/SettingsContexts";
-
-interface ClockFaceProps {
-  currentDateTime: any;
-  clockNumbers: number[];
-  timezone: any;
-}
+import { ClockFaceProps } from "../../../Interfaces/ClockFaceProps";
 
 const ClockFace: React.FC<ClockFaceProps> = ({
   currentDateTime,

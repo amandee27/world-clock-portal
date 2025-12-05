@@ -99,7 +99,7 @@ const RightDropDown: React.FC = () => {
               />
               <label
                 htmlFor="default-checkbox"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 text-sm text-gray-900 dark:text-gray-300"
               >
                 Show Numbers
               </label>

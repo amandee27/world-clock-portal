@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-
 import Popup from "../Modal/Popup";
 import ClockLabel from "./ClockLabel/ClockLabel";
 import ClockFace from "./ClockFace/ClockFace";
