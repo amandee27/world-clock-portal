@@ -7,23 +7,22 @@ const customStyles = {
     alignItems: "flex-start",
     fontSize: "medium",
     color: "grey",
-    minHeight: "none",
-    padding: "none",
-    paddingTop: "0px",
-    paddingBottom: "0px",
-    borderRadius: "4px",
+    minHeight: 36,
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderRadius: 4,
     boxShadow: "none",
     boxSizing: "none",
   }),
   menu: (provided: any) => ({
     ...provided,
-    borderRadius: "4px",
+    borderRadius: 4,
     overflow: "hidden",
-    marginTop: "4px",
+    marginTop: 4,
   }),
   menuList: (provided: any) => ({
     ...provided,
-    borderRadius: "4px", // Full rounding inside
+    borderRadius: 4, // Full rounding inside
     padding: 0,
     overflow: "hidden", // keeps rounded corners clean
   }),
@@ -31,13 +30,12 @@ const customStyles = {
     ...provided,
     fontSize: "small",
     color: "grey",
-    backgroundColor: state.isSelected ? "rgba(189,197,209,.3)" : "white",
-    "&:hover": {
-      backgroundColor: state.isSelected
-        ? "rgba(189,197,209,.3)"
-        : "rgb(222, 235, 255)",
-    },
-    borderRadius: "4px",
+    backgroundColor: state.isSelected
+      ? "rgba(189,197,209,.3)" // selected
+      : state.isFocused //Works on hover and keyboard focus
+      ? "rgb(222, 235, 255)"
+      : "white",
+    borderRadius: 4,
   }),
 };
 
@@ -69,11 +67,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
       });
   };
 
-  const handleAdd = () => {
-    if (selectedZone) {
-      addClock(selectedZone);
-      setSelectedZone(null);
-    }
+  const handleAdd = (selectedZone: {
+    value: string;
+    label: string;
+    offset: string;
+  }) => {
+    addClock(selectedZone);
+    setSelectedZone(null);
   };
   return (
     <div className="flex-1 flex justify-center items-stretch gap-4">
@@ -85,6 +85,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
           onChange={(option) => {
             if (option) {
               setSelectedZone(option);
+              handleAdd(option);
             }
           }}
           noOptionsMessage={() => null}
@@ -92,14 +93,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
           className="z-60"
           styles={customStyles}
         />
-      </div>
-      <div>
-        <button
-          className="bg-white h-full hover:bg-gray-100 text-gray-500 text-sm  w-15 border border-gray-400 rounded-sm shadow"
-          onClick={handleAdd}
-        >
-          Add
-        </button>
       </div>
     </div>
   );
