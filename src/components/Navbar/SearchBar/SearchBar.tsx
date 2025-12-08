@@ -57,7 +57,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
       options: { value: string; label: string; offset: string }[]
     ) => void
   ) => {
-    fetch(`${VITE_HOST_NAME}?query=${inputValue}`)
+    fetch(`${VITE_HOST_NAME}/cities?query=${inputValue}`)
       .then((res) => res.json())
       .then((data) => {
         const options = data.map((city: any) => ({
