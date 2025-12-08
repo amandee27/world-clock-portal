@@ -49,13 +49,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
     label: string;
     offset: string;
   } | null>(null);
+  const VITE_HOST_NAME =
+    import.meta.env.VITE_HOST_NAME || "http://localhost:3000/cities";
   const fetchLocations = (
     inputValue: string,
     callback: (
       options: { value: string; label: string; offset: string }[]
     ) => void
   ) => {
-    fetch(`http://localhost:3000/cities?query=${inputValue}`)
+    fetch(`${VITE_HOST_NAME}?query=${inputValue}`)
       .then((res) => res.json())
       .then((data) => {
         const options = data.map((city: any) => ({

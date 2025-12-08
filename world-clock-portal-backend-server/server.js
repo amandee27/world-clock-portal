@@ -15,8 +15,10 @@ countriesLib.registerLocale(enLocale);
 const app = express();
 const PORT = 3000;
 
+const FRONT_END_URL = process.env.FRONT_END_URL || "http://localhost:5173";
+
 // Enable CORS (allow frontend like localhost:5173)
-app.use(cors({ origin: "http://localhost:5174" }));
+app.use(cors({ origin: FRONT_END_URL }));
 
 // --- Load and prepare city data ---
 const MIN_POPULATION = 300000; // filter for "major" cities
@@ -78,5 +80,7 @@ app.get("/cities", (req, res) => {
 
 // --- Start the server ---
 app.listen(PORT, () =>
-  console.log(`🚀 Server running at http://localhost:${PORT}`)
+  console.log(
+    `🚀 Server running at http://localhost:${PORT} and front-end URL is ${FRONT_END_URL}`
+  )
 );
