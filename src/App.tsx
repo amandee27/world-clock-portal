@@ -113,7 +113,6 @@ function App() {
         )}
 
         <div className="flex-1 p-4">
-          <p className="text-white">AB: {import.meta.env.VITE_HOST_NAME}</p>
           <ClockGrid
             timeZoneList={timeZoneList}
             currentDateTime={currentDateTime}
