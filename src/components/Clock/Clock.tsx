@@ -8,7 +8,13 @@ import { ClockProps } from "../../Interfaces/ClockProps";
 
 const clockNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-function Clock({ timezone, currentDateTime, deleteClock }: ClockProps) {
+function Clock({
+  timezone,
+  currentDateTime,
+  deleteClock,
+  loading,
+  loadingClockId,
+}: ClockProps) {
   const [popup, setPopup] = useState(false);
 
   /**Confirm clock deletion and trigger deleteClock method in parent component*/
@@ -30,7 +36,11 @@ function Clock({ timezone, currentDateTime, deleteClock }: ClockProps) {
           confirmDeleteClock={confirmDeleteClock}
         ></Popup>
       )}
-      <ClockOuterContainer>
+      <ClockOuterContainer
+        timezone={timezone}
+        loading={loading}
+        loadingClockId={loadingClockId}
+      >
         <div className="relative p-4 flex flex-col items-center justify-between text-sm">
           <div className="absolute top-2 right-2 text-white group-hover:text-red-400">
             <ClockDeleteButton
