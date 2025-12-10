@@ -48,12 +48,12 @@ function App() {
       setTimezoneList(filteredTimeZoneList);
       setLoadingClockId("");
       setLoading(false);
-    }, 500);
+    }, 1500);
 
     setNotification(`Clock ${deleteTimezone} is successfully deleted`);
     setTimeout(() => {
       setNotification(null);
-    }, 1000);
+    }, 1500);
   };
 
   const updateTime = () => {
@@ -87,11 +87,11 @@ function App() {
     setTimeout(() => {
       setLoading(false);
       setLoadingClockId(timezone.label ?? "");
-    }, 500);
+    }, 1500);
 
     setTimeout(() => {
       setNotification(null);
-    }, 1000);
+    }, 1500);
   };
 
   const swapClocks = (fromId: string, toId: string) => {
