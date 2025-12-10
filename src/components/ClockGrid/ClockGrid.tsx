@@ -12,7 +12,7 @@ const ClockGrid: React.FC<ClockGridProps> = ({
   loadingClockId,
 }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-0">
       {timeZoneList.map((timezone) => (
         <Swap
           key={timezone.id}

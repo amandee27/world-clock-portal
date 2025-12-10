@@ -110,10 +110,11 @@ function App() {
     <div className="flex flex-col min-h-full bg-blue-950 ">
       <SettingsProvider>
         <Navbar addClock={addClock}></Navbar>
-
-        {notification && (
-          <Notification notification={notification}></Notification>
-        )}
+        <div className="flex justify-center h-8">
+          {notification && (
+            <Notification notification={notification}></Notification>
+          )}
+        </div>
 
         <div className="flex-1 p-4">
           <ClockGrid
