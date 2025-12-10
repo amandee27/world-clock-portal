@@ -56,7 +56,7 @@ function Clock({
             />
           </div>
         </div>
-        <div className="text-center">
+        <div className="text-center pb-4">
           <ClockLabel
             label={timezone.label && timezone.value ? timezone.label : "Local"}
             currentDateTime={currentDateTime}
