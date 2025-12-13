@@ -12,7 +12,10 @@ const ClockDeleteButton: React.FC<ClockDeleteButtonProps> = ({
   if (isLocal) return null;
   return (
     <div className="absolute top-2 right-2 text-white group-hover:text-red-400">
-      <button className="text-white hidden group-hover:block" onClick={onClick}>
+      <button
+        className="text-white hidden group-hover:block cursor-pointer"
+        onClick={onClick}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           x="0px"
