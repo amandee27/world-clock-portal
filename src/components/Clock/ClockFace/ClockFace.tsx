@@ -59,7 +59,7 @@ const ClockFace: React.FC<ClockFaceProps> = ({
           ></span>
           {/* Second hand */}
           <span
-            className={`${theme.value.hand.second} h-23 w-1/10 absolute bottom-1.5 z-30 w-1 origin-bottom rounded-md`}
+            className={`${theme.value.hand.second} h-23 w-1/10 absolute bottom-1.5 z-30 origin-bottom rounded-md`}
             style={timing.updateSeconds}
           ></span>
           {/* Minute hand */}

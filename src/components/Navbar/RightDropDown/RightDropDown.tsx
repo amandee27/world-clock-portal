@@ -61,7 +61,7 @@ const RightDropDown: React.FC = () => {
       <button
         id="dropdownCheckboxButton"
         onClick={toggleDropdown}
-        className="text-gray-500 bg-white hover:bg-blue-100 focus:ring-1 focus:outline-none focus:ring-blue-300 text-sm inline-flex items-center justify-between dark:bg-white dark:hover:bg-blue-100 dark:focus:ring-blue-800 w-44 px-5 py-2.5 rounded-sm"
+        className="text-gray-500 bg-white hover:bg-blue-100 focus:ring-1 focus:outline-none focus:ring-blue-300 text-sm hidden md:inline-flex items-center justify-between dark:bg-white dark:hover:bg-blue-100 dark:focus:ring-blue-800 w-44 h-9.5 px-5 py-2.5  rounded-[3px]"
         type="button"
       >
         Clock Settings{" "}
@@ -81,9 +81,25 @@ const RightDropDown: React.FC = () => {
           />
         </svg>
       </button>
+      <button
+        id="dropdownIconButton"
+        className="fill-white md:hidden  block ml-auto "
+        onClick={toggleDropdown}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="20"
+          height="20"
+          viewBox="0 0 50 50"
+        >
+          <path d="M 3 9 A 1.0001 1.0001 0 1 0 3 11 L 47 11 A 1.0001 1.0001 0 1 0 47 9 L 3 9 z M 3 24 A 1.0001 1.0001 0 1 0 3 26 L 47 26 A 1.0001 1.0001 0 1 0 47 24 L 3 24 z M 3 39 A 1.0001 1.0001 0 1 0 3 41 L 47 41 A 1.0001 1.0001 0 1 0 47 39 L 3 39 z"></path>
+        </svg>
+      </button>
       <div
         id="mainDropdown"
-        className={`absolute z-10  w-44 bg-white  shadow-sm dark:bg-gray-700 rounded-sm mt-1 dark:divide-gray-600 ${
+        className={`absolute z-100  w-44 bg-white  shadow-sm dark:bg-gray-700 rounded-sm mt-1 dark:divide-gray-600 ${
           isOpen ? "block" : "hidden"
         }`}
       >
