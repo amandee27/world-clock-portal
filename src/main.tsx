@@ -2,9 +2,18 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import "./index.css";
 import App from "./App.tsx";
+import { Provider } from "react-redux";
+import { store } from "./store.tsx";
+import { saveState } from "./localStorage.tsx";
+
+store.subscribe(() => {
+  saveState(store.getState().clockState.timezoneList);
+});
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
 );
