@@ -10,7 +10,7 @@ export default function Navbar({
   return (
     <nav className="w-full bg-transparent text-white px-4 py-3 flex items-center justify-between">
       <div className="flex flex-wrap w-full gap-4 items-stretch">
-        <div className="flex-1 min-w-[120px] text-left order-1">
+        <div className="flex-1 min-w-[120px] flex items-center text-left order-1">
           <Logo />
         </div>
         <div className="flex-1 min-w-[120px] flex justify-end items-center order-2 md:order-3">
