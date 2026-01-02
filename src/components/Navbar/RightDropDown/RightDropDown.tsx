@@ -64,7 +64,7 @@ const RightDropDown: React.FC = () => {
         className="text-gray-500 bg-white hover:bg-blue-100 focus:ring-1 focus:outline-none focus:ring-blue-300 text-sm hidden md:inline-flex items-center justify-between dark:bg-white dark:hover:bg-blue-100 dark:focus:ring-blue-800 w-44 h-9.5 px-5 py-2.5  rounded-[3px]"
         type="button"
       >
-        Clock Settings{" "}
+        Settings{" "}
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -127,7 +127,7 @@ const RightDropDown: React.FC = () => {
               type="button"
               className=" w-38 flex items-center justify-between px-4 py-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
             >
-              Clock Themes
+              Themes
               <svg
                 className="w-2.5 h-2.5 ms-3 rtl:rotate-180"
                 aria-hidden="true"
