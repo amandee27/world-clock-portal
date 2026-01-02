@@ -19,6 +19,7 @@ const customStyles = {
     borderRadius: 4,
     overflow: "hidden",
     marginTop: 4,
+    textAlign: "left",
   }),
   menuList: (provided: any) => ({
     ...provided,
