@@ -35,12 +35,12 @@ function App() {
       dispatch(removeTimezone({ id: deleteTimezone }));
       setLoadingClockId("");
       setLoading(false);
-    }, 1500);
+      setNotification(`Clock ${deleteTimezone} is successfully deleted`);
+    }, 500);
 
-    setNotification(`Clock ${deleteTimezone} is successfully deleted`);
     setTimeout(() => {
       setNotification(null);
-    }, 1500);
+    }, 2500);
   };
 
   const updateTime = () => {
