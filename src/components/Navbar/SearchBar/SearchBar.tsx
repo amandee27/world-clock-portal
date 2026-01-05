@@ -80,7 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ addClock }) => {
   };
   return (
     <div className="flex-1 flex justify-center items-stretch gap-4">
-      <div className="sm:w-40 md:w-80 lg:w-120">
+      <div className="sm:w-80 md:w-80 lg:w-120">
         <AsyncSelect
           cacheOptions
           loadOptions={fetchLocations}
