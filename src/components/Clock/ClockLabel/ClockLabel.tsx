@@ -22,7 +22,7 @@ const ClockLabel: React.FC<ClockLabelProps> = ({
   }
 
   return (
-    <div className="text-center">
+    <div className="text-center select-none">
       <h1 className="text-l font-semibold text-stone-50 mt-4">{label}</h1>
       <p className="text-stone-50">
         {relativeDay}
