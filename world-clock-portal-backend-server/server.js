@@ -63,7 +63,13 @@ app.get("/cities", (req, res) => {
     return res.status(400).json({ error: "Query parameter is required" });
   }
 
-  const results = MAJOR_CITIES.filter((c) => c.city.toLowerCase().startsWith(q))
+  const results = MAJOR_CITIES.filter((c) => {
+    const cityMatch = c.city.toLowerCase().startsWith(q);
+    const countryMatch = getCountryName(c.countryCode)
+      .toLowerCase()
+      .includes(q);
+    return cityMatch || countryMatch;
+  })
     .slice(0, 50) // limit results
     .map((c) => ({
       city: c.city,
