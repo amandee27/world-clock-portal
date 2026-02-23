@@ -1,6 +1,6 @@
-# 🌍 World Clock Portal ⏰
+# 🌍 Timezone Clock ⏰
 
-A modern, interactive **World Clock application** built with **React + TypeScript**, allowing users to track multiple timezones, customize clock themes, and reorder clocks using a custom drag-and-swap system.
+A modern, interactive **Timezone Clock application** built with **React + TypeScript**, allowing users to track multiple timezones, customize clock themes, and reorder clocks using a custom drag-and-swap system.
 
 This project focuses on **front-end performance, clean UX, and scalable state management**.
 
@@ -58,6 +58,6 @@ This project focuses on **front-end performance, clean UX, and scalable state ma
 Clone the repository:
 
 ```bash
-git clone https://github.com/amandee27/world-clock-portal
-cd world-clock-portal
+git clone https://github.com/amandee27/timezone-clock
+cd timezone-clock
 ```
