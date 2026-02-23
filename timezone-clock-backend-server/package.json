@@ -1,5 +1,5 @@
 {
-  "name": "world-clock-portal-backend-server",
+  "name": "timezone-clock-backend-server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
