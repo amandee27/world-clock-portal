@@ -19,7 +19,7 @@ This project focuses on **front-end performance, clean UX, and scalable state ma
 
 ## 🖥️ Demo
 
-![](./resources/world_clock_portal.gif)
+![](./resources/timezone_clock.gif)
 
 ---
 
