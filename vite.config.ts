@@ -7,4 +7,5 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
   cacheDir: "node_modules/.vite",
+  base: "./",
 });

@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Timezone Clock",
+  "version": "1.0",
+  "description": "A clock that shows the time in different timezones.",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "host_permissions": ["http://localhost:3000/*"]
+}
