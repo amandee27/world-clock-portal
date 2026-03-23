@@ -18,12 +18,20 @@ const PORT = 3000;
 const allowedOrigins = [
   process.env.FRONT_END_URL,
   "http://localhost:5173",
+  `chrome-extension://${process.env.EXTENSION_ID}`,
 ].filter(Boolean);
 
-// Enable CORS (allow frontend like localhost:5173)
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     optionsSuccessStatus: 200,
   }),
 );
