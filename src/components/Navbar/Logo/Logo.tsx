@@ -1,4 +1,4 @@
-import LogoIcon from "../../../assets/logo/globe-clock-svgrepo-com.svg?react";
+import LogoIcon from "../../../assets/logo/globe-clock-icon.svg?react";
 
 function Logo() {
   return (
