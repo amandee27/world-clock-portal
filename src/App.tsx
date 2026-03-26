@@ -108,6 +108,12 @@ function App() {
             loadingClockId={loadingClockId}
           />
         </div>
+        <footer className="py-3 text-center text-xs text-slate-500">
+          © {new Date().getFullYear()} Timezone Clock &nbsp;·&nbsp;{" "}
+          <a href="/privacy.html" className="hover:text-slate-400 transition-colors">
+            Privacy Policy
+          </a>
+        </footer>
       </SettingsProvider>
     </div>
   );
